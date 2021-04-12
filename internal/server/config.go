@@ -1,56 +1,59 @@
 package server
 
 import (
-	"os"
-	"strconv"
-
-	"github.com/pkg/errors"
+	"github.com/caarlos0/env"
 )
 
 type Configuration struct {
-	Host           string
-	Port           int
-	SSL            bool
-	ServerCertPath string
-	ServerKeyPath  string
+	Host           string `env:"server_host"`
+	Port           int    `env:"server_port"`
+	SSL            bool   `env:"server_ssl"`
+	ServerCertPath string `env:"server_cert_path"`
+	ServerKeyPath  string `env:"server_key_path"`
 }
 
 var configuration Configuration
 
 func loadConfigFromEnvs() {
-	var err error
 
-	port, ok := os.LookupEnv("server_port")
-	if !ok {
-		port = "8081"
-	}
-	configuration.Port, err = strconv.Atoi(port)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to convert port to int"))
+	if err := env.Parse(&configuration); err != nil {
+		logger.WithError(err).Error("failed to get server config from env")
+		panic(err)
 	}
 
-	host, ok := os.LookupEnv("server_host")
-	if !ok {
-		host = "localhost"
-	}
-	configuration.Host = host
+	// var err error
 
-	ssl, ok := os.LookupEnv("server_ssl")
-	if !ok || ssl != "true" {
-		configuration.SSL = false
-	} else {
-		configuration.SSL = true
-	}
+	// port, ok := os.LookupEnv("server_port")
+	// if !ok {
+	// 	port = "8081"
+	// }
+	// configuration.Port, err = strconv.Atoi(port)
+	// if err != nil {
+	// 	panic(errors.Wrap(err, "failed to convert port to int"))
+	// }
 
-	serverCertPath, ok := os.LookupEnv("server_cert_path")
-	if !ok {
-		configuration.ServerCertPath = "ssl/server_cert_path"
-	}
-	configuration.ServerCertPath = serverCertPath
+	// host, ok := os.LookupEnv("server_host")
+	// if !ok {
+	// 	host = "localhost"
+	// }
+	// configuration.Host = host
 
-	serverKeyPath, ok := os.LookupEnv("server_key_path")
-	if !ok {
-		configuration.ServerKeyPath = "ssl/server_key_path"
-	}
-	configuration.ServerKeyPath = serverKeyPath
+	// ssl, ok := os.LookupEnv("server_ssl")
+	// if !ok || ssl != "true" {
+	// 	configuration.SSL = false
+	// } else {
+	// 	configuration.SSL = true
+	// }
+
+	// serverCertPath, ok := os.LookupEnv("server_cert_path")
+	// if !ok {
+	// 	configuration.ServerCertPath = "ssl/server_cert_path"
+	// }
+	// configuration.ServerCertPath = serverCertPath
+
+	// serverKeyPath, ok := os.LookupEnv("server_key_path")
+	// if !ok {
+	// 	configuration.ServerKeyPath = "ssl/server_key_path"
+	// }
+	// configuration.ServerKeyPath = serverKeyPath
 }

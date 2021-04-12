@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/SKilliu/users-rest-api/internal/server/handlers/admin"
-	"github.com/SKilliu/users-rest-api/internal/server/handlers/user"
+	"github.com/SKilliu/novels-backend/internal/server/handlers/admin"
+	"github.com/SKilliu/novels-backend/internal/server/handlers/user"
 	"github.com/sirupsen/logrus"
 )
 

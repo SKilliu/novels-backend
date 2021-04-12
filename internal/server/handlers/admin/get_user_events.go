@@ -3,10 +3,10 @@ package admin
 import (
 	"net/http"
 
-	"github.com/SKilliu/users-rest-api/internal/db"
-	"github.com/SKilliu/users-rest-api/internal/errs"
+	"github.com/SKilliu/novels-backend/internal/db"
+	"github.com/SKilliu/novels-backend/internal/errs"
 
-	"github.com/SKilliu/users-rest-api/internal/server/dto"
+	"github.com/SKilliu/novels-backend/internal/server/dto"
 
 	"github.com/labstack/echo/v4"
 )

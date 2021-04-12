@@ -19,6 +19,4 @@ func loadConfigFromEnvs() {
 		logger.WithError(err).Error("failed to get db data from env")
 		panic(err)
 	}
-
-	return
 }

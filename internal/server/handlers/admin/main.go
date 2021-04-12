@@ -3,7 +3,7 @@ package admin
 import (
 	"database/sql"
 
-	"github.com/SKilliu/users-rest-api/internal/db"
+	"github.com/SKilliu/novels-backend/internal/db"
 	"github.com/sirupsen/logrus"
 )
 

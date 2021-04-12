@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/SKilliu/users-rest-api/internal/errs"
-	"github.com/SKilliu/users-rest-api/internal/server/dto"
-	"github.com/SKilliu/users-rest-api/utils"
+	"github.com/SKilliu/novels-backend/internal/db/models"
+
+	"github.com/SKilliu/novels-backend/internal/errs"
+	"github.com/SKilliu/novels-backend/internal/server/dto"
+	"github.com/SKilliu/novels-backend/utils"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/SKilliu/users-rest-api/internal/db"
 	"github.com/google/uuid"
 
 	"github.com/labstack/echo/v4"
@@ -24,14 +25,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad param in body")
 	}
 
-	tx, err := h.db.Begin()
-	if err != nil {
-		h.log.WithError(err).Error("failed to create db transaction")
-		return c.JSON(http.StatusBadRequest, "bad param in body")
-	}
-	defer tx.Rollback()
-
-	_, err = db.GetUserByEmail(tx, req.Email)
+	_, err = h.usersDB.GetByEmail(req.Email)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -43,7 +37,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 
 			uid := uuid.New().String()
 
-			err = db.InsertUser(tx, db.User{
+			err = h.usersDB.Insert(models.User{
 				ID:             uid,
 				Name:           req.Name,
 				HashedPassword: string(passwordBytes),
@@ -51,12 +45,6 @@ func (h *Handler) SignUp(c echo.Context) error {
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to create new user")
-				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-			}
-
-			err = tx.Commit()
-			if err != nil {
-				h.log.WithError(err).Error("failed to commit a transaction")
 				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 			}
 
