@@ -1,0 +1,16 @@
+"server_host": localhost
+"server_port": 8081
+"server_ssl": false
+"server_cert_path": 1
+"server_cert_key": 2
+"authentication_secret": wehfkhsdbcjhdsbchsaca
+"db_name": server-db
+"db_host": localhost
+"db_port": 5430
+"db_user": postgres
+"db_password": 1234567
+"db_ssl": disable
+"s3_access_key": 123123123
+"s3_secret_key": 123123123
+"s3_url": localhost:9000
+"s3_bucket": server-s3

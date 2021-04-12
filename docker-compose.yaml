@@ -1,0 +1,30 @@
+version: "2.1"
+
+services:
+  server-s3:
+    container_name: server-s3
+    image: minio/minio
+    ports:
+      - 9000:9000
+    environment:
+      - MINIO_ACCESS_KEY=123123123
+      - MINIO_SECRET_KEY=123123123
+    command: server /home/shared
+
+  server-db:
+    container_name: server-db
+    image: postgres:10
+    ports:
+      - 5430:5432
+    environment:
+      - POSTGRES_DB=server-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234567
+    command: postgres -c listen_addresses='*'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data/server-db:/var/lib/postgresql/data
