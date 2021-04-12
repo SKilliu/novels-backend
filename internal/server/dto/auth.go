@@ -7,12 +7,17 @@ type SignUpRequest struct {
 	DeviceID string `json:"deviceId"`
 }
 
+type SignInReq struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
 type AuthResponse struct {
 	ID          string `json:"id"`
 	Username    string `json:"username"`
 	Email       string `json:"email"`
 	Token       string `json:"token"`
-	DateOfBirth int    `json:"dateOfBith"`
+	DateOfBirth int64  `json:"dateOfBith"`
 	Gender      string `json:"gender"`
 	Membership  string `json:"membership"`
 	AvatarData  string `json:"avatarData"`

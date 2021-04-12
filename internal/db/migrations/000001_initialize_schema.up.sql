@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     username        VARCHAR(255)        NOT NULL UNIQUE,
     hashed_password VARCHAR(255)        NOT NULL,
     email           VARCHAR(255)        NOT NULL UNIQUE,
-    date_of_birth   TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_of_birth   INTEGER             NOT NULL DEFAULT 0,
     gender          VARCHAR(100)        NOT NULL DEFAULT 'male',
     membership      VARCHAR(200)        NOT NULL DEFAULT 'none',
     avatar_data     VARCHAR(500)        NOT NULL DEFAULT 'none',

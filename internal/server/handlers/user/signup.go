@@ -3,6 +3,7 @@ package user
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	"github.com/SKilliu/novels-backend/internal/db/models"
 
@@ -29,6 +30,18 @@ func (h *Handler) SignUp(c echo.Context) error {
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
+
+			amount, err := h.usersDB.CheckUserByUsername(req.Username)
+			if err != nil {
+				h.log.WithError(err).Error("failed to get user from db by username")
+				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+			}
+
+			if amount.Exists {
+				h.log.WithError(err).Error("username already exists")
+				return c.JSON(http.StatusInternalServerError, errs.UsernameAlreadyExistsErr)
+			}
+
 			passwordBytes, err := bcrypt.GenerateFromPassword([]byte(req.Password), 10)
 			if err != nil {
 				h.log.WithError(err).Error("failed to create hash for password")
@@ -43,6 +56,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 				HashedPassword: string(passwordBytes),
 				Email:          req.Email,
 				DeviceID:       req.DeviceID,
+				DateOfBirth:    time.Now().Unix(),
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to create new user")
@@ -68,5 +82,5 @@ func (h *Handler) SignUp(c echo.Context) error {
 	}
 
 	h.log.WithError(err).Error("user with this email already exists")
-	return c.JSON(http.StatusBadRequest, errs.UserAlreadyExistErr)
+	return c.JSON(http.StatusBadRequest, errs.EmailAlreadyExistErr)
 }
