@@ -17,6 +17,4 @@ func loadConfigFromEnvs() {
 		logger.WithError(err).Error("failed to load s3 config from envs")
 		panic(err)
 	}
-
-	return
 }

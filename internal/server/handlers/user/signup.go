@@ -39,9 +39,10 @@ func (h *Handler) SignUp(c echo.Context) error {
 
 			err = h.usersDB.Insert(models.User{
 				ID:             uid,
-				Name:           req.Name,
+				Username:       req.Username,
 				HashedPassword: string(passwordBytes),
 				Email:          req.Email,
+				DeviceID:       req.DeviceID,
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to create new user")
@@ -55,7 +56,10 @@ func (h *Handler) SignUp(c echo.Context) error {
 			}
 
 			return c.JSON(http.StatusOK, dto.AuthResponse{
-				Token: token,
+				ID:       uid,
+				Username: req.Username,
+				Email:    req.Email,
+				Token:    token,
 			})
 		default:
 			h.log.WithError(err).Error("failed to get user from db by email")

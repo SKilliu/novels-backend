@@ -1,8 +1,6 @@
 package server
 
-import (
-	"os"
-)
+import "github.com/caarlos0/env"
 
 var authConfig Auth
 
@@ -12,15 +10,8 @@ type Auth struct {
 }
 
 func loadAuthConfigFromEnvs() {
-	secret, ok := os.LookupEnv("authentication_secret")
-	if !ok {
-		secret = "12312312323"
+	if err := env.Parse(&configuration); err != nil {
+		logger.WithError(err).Error("failed to get auth config from env")
+		panic(err)
 	}
-	authConfig.VerifyKey = secret
-
-	algorithm, ok := os.LookupEnv("authentication_algorithm")
-	if !ok {
-		algorithm = "HS256"
-	}
-	authConfig.Algorithm = algorithm
 }

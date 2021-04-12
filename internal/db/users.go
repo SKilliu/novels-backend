@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/SKilliu/novels-backend/db/models"
+	"github.com/SKilliu/novels-backend/internal/db/models"
 
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )

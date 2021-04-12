@@ -21,9 +21,9 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 
 	e.GET("/", healthz)
 	e.POST("/signup", provider.UserHandler.SignUp)
-	e.GET("/admin/panel", provider.AdminHandler.GetAdminPanel)
-	e.POST("/user/log_event", provider.UserHandler.LogEvent)
-	e.GET("/admin/events", provider.AdminHandler.GetUserEvents)
+	// e.GET("/admin/panel", provider.AdminHandler.GetAdminPanel)
+	// e.POST("/user/log_event", provider.UserHandler.LogEvent)
+	// e.GET("/admin/events", provider.AdminHandler.GetUserEvents)
 
 	return e
 }

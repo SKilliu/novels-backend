@@ -4,9 +4,8 @@ import (
 	"fmt"
 
 	dbx "github.com/go-ozzo/ozzo-dbx"
-	"github.com/sirupsen/logrus"
-
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
 var dbConn QInterface
@@ -49,6 +48,9 @@ func (d DB) DBX() *dbx.DB {
 // New connection opening.
 func New(link string) (QInterface, error) {
 	db, err := dbx.Open("postgres", link)
+
+	logger.Info("Database connection succesfully opened")
+
 	return &DB{db: db}, err
 }
 
