@@ -7,17 +7,19 @@ import (
 )
 
 type Handler struct {
-	log         *logrus.Entry
-	usersDB     db.UsersQ
-	authKey     string
-	emailClient *email.EmailClient
+	log                  *logrus.Entry
+	usersDB              db.UsersQ
+	changePassRequestsDB db.ChangePassRequestsQ
+	authKey              string
+	emailClient          *email.EmailClient
 }
 
 func New(logger *logrus.Entry, authKey string) *Handler {
 	return &Handler{
-		log:         logger,
-		usersDB:     db.Connection().UsersQ(),
-		authKey:     authKey,
-		emailClient: email.NewClient(),
+		log:                  logger,
+		usersDB:              db.Connection().UsersQ(),
+		changePassRequestsDB: db.Connection().ChangePassRequestsQ(),
+		authKey:              authKey,
+		emailClient:          email.NewClient(),
 	}
 }

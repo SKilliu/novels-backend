@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS users (
     is_verified         BOOLEAN             NOT NULL DEFAULT false
 );
 
+CREATE TABLE IF NOT EXISTS change_password_requests (
+    id      VARCHAR(36)         PRIMARY KEY,
+    user_id VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS user_events (
     id varchar(36) primary key,
     user_id varchar(36) references users (id) on delete cascade,

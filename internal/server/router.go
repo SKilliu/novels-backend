@@ -26,6 +26,8 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	e.POST("/guest_signup", provider.UserHandler.GuestSignUp)
 	e.GET("/info", provider.UserHandler.GetInfo, m.ParseToken)
 	e.PATCH("/verify_signup", provider.UserHandler.SignUpVerification)
+	e.POST("/reset_password", provider.UserHandler.RequestResetPassword)
+	e.POST("/check_password", provider.UserHandler.CheckResetPassword)
 
 	return e
 }
