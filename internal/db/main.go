@@ -14,26 +14,8 @@ type QInterface interface {
 	DBX() *dbx.DB
 
 	UsersQ() UsersQ
+	ChangePassRequestsQ() ChangePassRequestsQ
 }
-
-// // New connection opening.
-// func NewConnection(config string) {
-// 	db, err := sql.Open("postgres", config)
-// 	if err != nil {
-// 		logger.WithError(err).Error("failed to open db connection")
-// 		panic(err)
-// 	}
-
-// 	err = db.Ping()
-// 	if err != nil {
-// 		logger.WithError(err).Error("failed to ping db")
-// 		panic(err)
-// 	}
-
-// 	logger.Info("db connection successfully created")
-
-// 	dbConn = db
-// }
 
 // DB wraps dbx interface.
 type DB struct {

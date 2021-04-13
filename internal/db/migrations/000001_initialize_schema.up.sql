@@ -1,14 +1,21 @@
 CREATE TABLE IF NOT EXISTS users (
-    id              VARCHAR(36)         PRIMARY KEY,
-    username        VARCHAR(255)        NOT NULL UNIQUE,
-    hashed_password VARCHAR(255)        NOT NULL,
-    email           VARCHAR(255)        NOT NULL UNIQUE,
-    date_of_birth   INTEGER             NOT NULL DEFAULT 0,
-    gender          VARCHAR(100)        NOT NULL DEFAULT 'male',
-    membership      VARCHAR(200)        NOT NULL DEFAULT 'none',
-    avatar_data     VARCHAR(500)        NOT NULL DEFAULT 'none',
-    device_id       VARCHAR(200)        NOT NULL DEFAULT 'none',
-    rate            INTEGER             NOT NULL DEFAULT 0
+    username            VARCHAR(255)        NOT NULL UNIQUE,
+    id                  VARCHAR(36)         PRIMARY KEY,
+    hashed_password     VARCHAR(255)        NOT NULL,
+    email               VARCHAR(255)        NOT NULL UNIQUE,
+    date_of_birth       INTEGER             NOT NULL DEFAULT 0,
+    gender              VARCHAR(100)        NOT NULL DEFAULT 'male',
+    membership          VARCHAR(200)        NOT NULL DEFAULT 'none',
+    avatar_data         VARCHAR(500)        NOT NULL DEFAULT 'none',
+    device_id           VARCHAR(200)        NOT NULL DEFAULT 'none',
+    rate                INTEGER             NOT NULL DEFAULT 0,
+    is_registered       BOOLEAN             NOT NULL DEFAULT false,
+    is_verified         BOOLEAN             NOT NULL DEFAULT false
+);
+
+CREATE TABLE IF NOT EXISTS change_password_requests (
+    id      VARCHAR(36)         PRIMARY KEY,
+    user_id VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS user_events (

@@ -15,6 +15,8 @@ type User struct {
 	AvatarData     string `db:"avatar_data"`
 	DeviceID       string `db:"device_id"`
 	Rate           int    `db:"rate"`
+	IsRegistered   bool   `db:"is_registered"`
+	IsVerified     bool   `db:"is_verified"`
 }
 
 type IsExists struct {

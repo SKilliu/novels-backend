@@ -3,7 +3,7 @@
 "server_ssl": false
 "server_cert_path": 1
 "server_cert_key": 2
-"authentication_secret": wehfkhsdbcjhdsbchsaca
+"authentication_secret": wehhbsdyvdsyfvyyGYFYTFDGSHUJSIffkhsdbcjhdsbchsaca
 "db_name": server-db
 "db_host": localhost
 "db_port": 5430
@@ -14,3 +14,6 @@
 "s3_secret_key": 123123123
 "s3_url": localhost:9000
 "s3_bucket": server-s3
+"SENDGRID_API_KEY": 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
+"email": 	m.liulchuk@theappsolutions.com
+"email_author": Novels Team

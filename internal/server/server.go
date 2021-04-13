@@ -17,7 +17,7 @@ func Init(log *logrus.Entry) {
 
 	loadConfigFromEnvs()
 	loadAuthConfigFromEnvs()
-	logger.Info("Server succesfully inited")
+	logger.Info("Server succesfully started")
 }
 
 func Start() error {
@@ -71,4 +71,8 @@ func Start() error {
 	logger.Infof("Listening on port %s:%d", configuration.Host, configuration.Port)
 
 	return nil
+}
+
+func GetServerLink() string {
+	return fmt.Sprintf("http://%s:%d", configuration.Host, configuration.Port)
 }

@@ -2,10 +2,12 @@ package user
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/SKilliu/novels-backend/internal/db/models"
+	"github.com/SKilliu/novels-backend/internal/email/content"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
 	"github.com/SKilliu/novels-backend/internal/server/dto"
@@ -57,6 +59,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 				Email:          req.Email,
 				DeviceID:       req.DeviceID,
 				DateOfBirth:    time.Now().Unix(),
+				IsRegistered:   true,
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to create new user")
@@ -69,12 +72,22 @@ func (h *Handler) SignUp(c echo.Context) error {
 				return c.JSON(http.StatusBadRequest, errs.BadParamInBodyErr)
 			}
 
+			verificationLink := fmt.Sprintf("http://localhost:8080/verify_signup?token=%s", uid)
+
+			err = h.emailClient.SendEmail(req.Username, req.Email, "Please Verify Your Account",
+				fmt.Sprintf(content.SignUpVerificationEmailContent, verificationLink))
+			if err != nil {
+				h.log.WithError(err).Error("failed to send email about successfull registration")
+				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+			}
+
 			return c.JSON(http.StatusOK, dto.AuthResponse{
 				ID:       uid,
 				Username: req.Username,
 				Email:    req.Email,
 				Token:    token,
 			})
+			
 		default:
 			h.log.WithError(err).Error("failed to get user from db by email")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)

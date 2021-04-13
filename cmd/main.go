@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/SKilliu/novels-backend/internal/db"
+	"github.com/SKilliu/novels-backend/internal/email"
 	"github.com/SKilliu/novels-backend/internal/server"
 	"github.com/SKilliu/novels-backend/utils"
 	"github.com/pkg/errors"
@@ -10,11 +11,6 @@ import (
 
 const pathToConfigFile = "./envs.yaml"
 
-// @title App API
-// @version 1.0
-// @securityDefinitions.apiKey bearerAuth
-// @in header
-// @name Authorization
 func main() {
 	log := logrus.New()
 	logger := logrus.NewEntry(log)
@@ -24,6 +20,7 @@ func main() {
 	db.Init(logger)
 	//s3.Init(logger)
 	server.Init(logger)
+	email.Init(logger)
 
 	err := server.Start()
 	if err != nil {
