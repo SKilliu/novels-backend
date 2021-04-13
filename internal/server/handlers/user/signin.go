@@ -35,6 +35,11 @@ func (h *Handler) SignIn(c echo.Context) error {
 		}
 	}
 
+	if !user.IsVerified {
+		h.log.WithError(err).Error("account isn't verified")
+		return c.JSON(http.StatusInternalServerError, errs.NotVerifiedAccountErr)
+	}
+
 	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(req.Password))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		h.log.WithError(err).Error("incorrect email or password")

@@ -13,9 +13,11 @@ var checkUserByUsernameQuery = `SELECT EXISTS (SELECT * FROM users WHERE usernam
 // UsersQ query interface, which provide access to DB functions.
 type UsersQ interface {
 	Insert(user models.User) error
+	Update(user models.User) error
 	GetByEmail(email string) (models.User, error)
 	GetByUsername(username string) (models.User, error)
 	CheckUserByUsername(username string) (models.IsExists, error)
+	GetByID(uid string) (models.User, error)
 }
 
 // UsersWrapper wraps interface.
@@ -33,6 +35,10 @@ func (d *DB) UsersQ() UsersQ {
 // Insert new user into database.
 func (u *UsersWrapper) Insert(user models.User) error {
 	return u.parent.db.Model(&user).Insert()
+}
+
+func (u *UsersWrapper) Update(user models.User) error {
+	return u.parent.db.Model(&user).Update()
 }
 
 // GetByEmail finds the user in database by email
@@ -53,4 +59,10 @@ func (u *UsersWrapper) CheckUserByUsername(username string) (models.IsExists, er
 	err := u.parent.db.NewQuery(fmt.Sprintf(checkUserByUsernameQuery, username)).One(&ex)
 	fmt.Println(ex)
 	return ex, err
+}
+
+func (u *UsersWrapper) GetByID(uid string) (models.User, error) {
+	var user models.User
+	err := u.parent.db.Select().Where(dbx.HashExp{"id": uid}).From(models.UsersTableName).One(&user)
+	return user, err
 }

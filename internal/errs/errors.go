@@ -26,4 +26,5 @@ var (
 	NoDataInFormErr          = ErrResp{"NO_DATA_IN_FORM", http.StatusBadRequest}
 	IncorrectAccountTypeErr  = ErrResp{"INCORRECT_ACCOUNT_TYPE", http.StatusForbidden}
 	EmptyQueryParamErr       = ErrResp{"QUERY_PARAM_IS_EMPTY", http.StatusBadRequest}
+	NotVerifiedAccountErr    = ErrResp{"NOT_VERIFIED_ACCOUNT", http.StatusForbidden}
 )
