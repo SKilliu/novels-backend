@@ -1,5 +1,5 @@
-"server_host": localhost
-"server_port": 8081
+"server_host": 165.227.207.77
+"server_port": 8000
 "server_ssl": false
 "server_cert_path": 1
 "server_cert_key": 2
