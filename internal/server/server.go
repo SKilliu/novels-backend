@@ -61,7 +61,7 @@ func Start() error {
 
 		logger.Infof("Listening on port %s:%d", configuration.Host, configuration.Port)
 
-		if err := httpServer.ListenAndServeTLS(configuration.ServerCertPath, configuration.ServerKeyPath); err != nil {
+		if err := httpServer.ListenAndServeTLS("./ssl/server.crt", "./ssl/server.key"); err != nil {
 			return errors.Wrap(err, "failed to start https server")
 		}
 
