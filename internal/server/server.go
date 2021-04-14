@@ -17,7 +17,7 @@ func Init(log *logrus.Entry) {
 
 	loadConfigFromEnvs()
 	loadAuthConfigFromEnvs()
-	logger.Info("Server succesfully started")
+	// logger.Info("Server succesfully started")
 }
 
 func Start() error {
@@ -58,21 +58,20 @@ func Start() error {
 		}
 
 		httpServer.TLSConfig = tlsConfig
+
+		logger.Infof("Listening on port %s:%d", configuration.Host, configuration.Port)
+
 		if err := httpServer.ListenAndServeTLS(configuration.ServerCertPath, configuration.ServerKeyPath); err != nil {
 			return errors.Wrap(err, "failed to start https server")
 		}
 
 	default:
+		logger.Infof("Listening on port %s:%d", configuration.Host, configuration.Port)
+
 		if err := httpServer.ListenAndServe(); err != nil {
 			return errors.Wrap(err, "failed to start http server")
 		}
 	}
 
-	logger.Infof("Listening on port %s:%d", configuration.Host, configuration.Port)
-
 	return nil
-}
-
-func GetServerLink() string {
-	return fmt.Sprintf("http://%s:%d", configuration.Host, configuration.Port)
 }

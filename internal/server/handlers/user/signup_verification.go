@@ -36,5 +36,5 @@ func (h *Handler) SignUpVerification(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	return c.NoContent(http.StatusOK)
+	return c.JSON(http.StatusOK, "Your account successfully verified")
 }

@@ -18,16 +18,17 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 
 	m := middlewares.New(authConfig.VerifyKey)
 
-	provider := NewProvider(logger, authConfig.VerifyKey)
+	provider := NewProvider(logger, authConfig)
 
 	e.GET("/", healthz)
 	e.POST("/signup", provider.UserHandler.SignUp)
 	e.POST("/signin", provider.UserHandler.SignIn)
 	e.POST("/guest_signup", provider.UserHandler.GuestSignUp)
 	e.GET("/info", provider.UserHandler.GetInfo, m.ParseToken)
-	e.PATCH("/verify_signup", provider.UserHandler.SignUpVerification)
-	e.POST("/reset_password", provider.UserHandler.RequestResetPassword)
+	e.GET("/verify_signup", provider.UserHandler.SignUpVerification)
+	e.POST("/reset_password", provider.UserHandler.RequestResetPassword, m.ParseToken)
 	e.POST("/check_password", provider.UserHandler.CheckResetPassword)
+	e.GET("/check_password", provider.UserHandler.CheckResetPassword)
 
 	return e
 }

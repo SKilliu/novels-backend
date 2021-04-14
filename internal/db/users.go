@@ -9,6 +9,7 @@ import (
 )
 
 var checkUserByUsernameQuery = `SELECT EXISTS (SELECT * FROM users WHERE username = '%s' LIMIT 1);`
+var checkUserByEmailQuery = `SELECT EXISTS (SELECT * FROM users WHERE email = '%s' LIMIT 1);`
 
 // UsersQ query interface, which provide access to DB functions.
 type UsersQ interface {
@@ -17,7 +18,9 @@ type UsersQ interface {
 	GetByEmail(email string) (models.User, error)
 	GetByUsername(username string) (models.User, error)
 	CheckUserByUsername(username string) (models.IsExists, error)
+	CheckUserByEmail(email string) (models.IsExists, error)
 	GetByID(uid string) (models.User, error)
+	GetByDeviceID(deviceID string) (models.User, error)
 }
 
 // UsersWrapper wraps interface.
@@ -61,8 +64,21 @@ func (u *UsersWrapper) CheckUserByUsername(username string) (models.IsExists, er
 	return ex, err
 }
 
+func (u *UsersWrapper) CheckUserByEmail(email string) (models.IsExists, error) {
+	var ex models.IsExists
+	err := u.parent.db.NewQuery(fmt.Sprintf(checkUserByEmailQuery, email)).One(&ex)
+	fmt.Println(ex)
+	return ex, err
+}
+
 func (u *UsersWrapper) GetByID(uid string) (models.User, error) {
 	var user models.User
 	err := u.parent.db.Select().Where(dbx.HashExp{"id": uid}).From(models.UsersTableName).One(&user)
+	return user, err
+}
+
+func (u UsersWrapper) GetByDeviceID(deviceID string) (models.User, error) {
+	var user models.User
+	err := u.parent.db.Select().Where(dbx.HashExp{"device_id": deviceID}).From(models.UsersTableName).One(&user)
 	return user, err
 }

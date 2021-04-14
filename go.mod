@@ -3,9 +3,12 @@ module github.com/SKilliu/novels-backend
 go 1.15
 
 require (
+	github.com/bugsnag/bugsnag-go v2.1.0+incompatible
+	github.com/bugsnag/panicwrap v1.3.2 // indirect
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-ozzo/ozzo-dbx v1.5.0
+	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/google/uuid v1.2.0

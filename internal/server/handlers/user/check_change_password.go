@@ -3,15 +3,27 @@ package user
 import (
 	"database/sql"
 	"net/http"
+	"text/template"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
-	"github.com/SKilliu/novels-backend/internal/server/dto"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func (h *Handler) CheckResetPassword(c echo.Context) error {
-	var req dto.SignUpRequest
+	tmpl := template.Must(template.ParseFiles("./static/web/reset_password_form.html"))
+
+	if c.Request().Method != http.MethodPost {
+		err := tmpl.Execute(c.Response(), nil)
+		if err != nil {
+			h.log.WithError(err).Error("failed to execute template")
+			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+		}
+		return c.NoContent(http.StatusOK)
+	}
+
+	password := c.FormValue("password")
+
 	token := c.QueryParam("token")
 
 	reqResPass, err := h.changePassRequestsDB.GetByID(token)
@@ -38,7 +50,7 @@ func (h *Handler) CheckResetPassword(c echo.Context) error {
 		}
 	}
 
-	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(req.Password), 10)
+	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	if err != nil {
 		h.log.WithError(err).Error("failed to create hash for password")
 		return c.JSON(http.StatusBadRequest, errs.BadParamInBodyErr)
@@ -49,6 +61,18 @@ func (h *Handler) CheckResetPassword(c echo.Context) error {
 	err = h.usersDB.Update(user)
 	if err != nil {
 		h.log.WithError(err).Error("failed to update user in db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	err = h.changePassRequestsDB.Delete(reqResPass)
+	if err != nil {
+		h.log.WithError(err).Error("failed to delete reset password request")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	err = tmpl.Execute(c.Response(), struct{ Success bool }{true})
+	if err != nil {
+		h.log.WithError(err).Error("failed to execute template")
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 

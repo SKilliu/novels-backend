@@ -12,9 +12,9 @@ type Provider struct {
 }
 
 // NewProvider is provider constructor.
-func NewProvider(logger *logrus.Entry, authKey string) *Provider {
+func NewProvider(logger *logrus.Entry, auth Auth) *Provider {
 	return &Provider{
 		// AdminHandler: admin.New(logger, authKey),
-		UserHandler: user.New(logger, authKey),
+		UserHandler: user.New(logger, auth.VerifyKey, auth.EmailAddress, auth.EmailPassword),
 	}
 }

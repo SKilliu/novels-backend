@@ -26,11 +26,11 @@ func (c *ChangePassRequestsWrapper) Insert(req models.ChangePassRequest) error {
 }
 
 func (c *ChangePassRequestsWrapper) Delete(req models.ChangePassRequest) error {
-	return c.parent.db.Model(&req).Update()
+	return c.parent.db.Model(&req).Delete()
 }
 
 func (c *ChangePassRequestsWrapper) GetByID(reqID string) (models.ChangePassRequest, error) {
 	var req models.ChangePassRequest
-	err := c.parent.db.Select().Where(dbx.HashExp{"id": reqID}).From(models.UsersTableName).One(&req)
+	err := c.parent.db.Select().Where(dbx.HashExp{"id": reqID}).From(models.ChangePasswordRequestsTableName).One(&req)
 	return req, err
 }
