@@ -23,3 +23,9 @@ type AuthResponse struct {
 	AvatarData  string `json:"avatarData"`
 	Rate        int    `json:"rate"`
 }
+
+type SocialsSignInRequest struct {
+	ID       string `json:"id"`
+	Social   string `json:"social"`
+	DeviceID string `json:"deviceId"`
+}

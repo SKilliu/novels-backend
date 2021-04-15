@@ -46,7 +46,7 @@ func (h *Handler) RequestResetPassword(c echo.Context) error {
 
 	token := uuid.New().String()
 
-	err = h.changePassRequestsDB.Insert(models.ChangePassRequest{
+	err = h.changePassRequestsDB.Insert(models.ResetPassRequest{
 		ID:     token,
 		UserID: user.ID,
 	})
@@ -65,7 +65,7 @@ func (h *Handler) RequestResetPassword(c echo.Context) error {
 		URL  string
 		Name string
 	}{
-		URL:  fmt.Sprintf("https://165.227.207.77:8000/check_password?token=%s", token),
+		URL:  fmt.Sprintf("https://localhost:8000/check_password?token=%s", token),
 		Name: user.Username,
 	}
 

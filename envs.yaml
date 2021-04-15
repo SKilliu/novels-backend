@@ -1,4 +1,4 @@
-"server_host": 165.227.207.77
+"server_host": localhost
 "server_port": 8000
 "server_ssl": true
 "server_cert_path": ./ssl/server.crt

@@ -21,14 +21,18 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	provider := NewProvider(logger, authConfig)
 
 	e.GET("/", healthz)
-	e.POST("/signup", provider.UserHandler.SignUp)
-	e.POST("/signin", provider.UserHandler.SignIn)
-	e.POST("/guest_signup", provider.UserHandler.GuestSignUp)
-	e.GET("/info", provider.UserHandler.GetInfo, m.ParseToken)
-	e.GET("/verify_signup", provider.UserHandler.SignUpVerification)
-	e.POST("/reset_password", provider.UserHandler.RequestResetPassword, m.ParseToken)
-	e.POST("/check_password", provider.UserHandler.CheckResetPassword)
-	e.GET("/check_password", provider.UserHandler.CheckResetPassword)
+	e.POST("/api/registration", provider.UserHandler.SignUp)
+	e.POST("/api/login", provider.UserHandler.SignIn)
+	e.POST("/api/guest-registration", provider.UserHandler.GuestSignIn)
+	e.GET("/api/verify_signup", provider.UserHandler.SignUpVerification)
+	e.POST("/api/check_password", provider.UserHandler.CheckResetPassword)
+	e.GET("/api/check_password", provider.UserHandler.CheckResetPassword)
+	e.POST("/api/socials-registration", provider.UserHandler.SocialsSignUp)
+	e.POST("/api/socials-login", provider.UserHandler.SocialsSignIn)
+
+	// with bearer token
+	e.GET("/api/user-info", provider.UserHandler.GetInfo, m.ParseToken)
+	e.POST("/api/reset_password_request", provider.UserHandler.RequestResetPassword, m.ParseToken)
 
 	return e
 }

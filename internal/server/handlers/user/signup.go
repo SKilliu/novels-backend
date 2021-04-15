@@ -73,7 +73,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 				Username:       req.Username,
 				HashedPassword: string(passwordBytes),
 				Email:          req.Email,
-				DeviceID:       req.DeviceID,
+				DeviceID:       "registered",
 				DateOfBirth:    time.Now().Unix(),
 				IsRegistered:   true,
 			})
@@ -92,6 +92,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 	user.Username = req.Username
 	user.Email = req.Email
 	user.HashedPassword = string(passwordBytes)
+	user.DeviceID = "registered"
 
 	err = h.usersDB.Update(user)
 	if err != nil {
@@ -115,7 +116,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 		URL  string
 		Name string
 	}{
-		URL:  fmt.Sprintf("https://165.227.207.77:8000/verify_signup?token=%s", uid),
+		URL:  fmt.Sprintf("https://localhost:8000/verify_signup?token=%s", uid),
 		Name: req.Username,
 	}
 

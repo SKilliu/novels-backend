@@ -14,7 +14,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h *Handler) GuestSignUp(c echo.Context) error {
+func (h *Handler) GuestSignIn(c echo.Context) error {
 	var req dto.SignUpRequest
 
 	err := c.Bind(&req)

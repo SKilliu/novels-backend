@@ -13,9 +13,16 @@ CREATE TABLE IF NOT EXISTS users (
     is_verified         BOOLEAN             NOT NULL DEFAULT false
 );
 
-CREATE TABLE IF NOT EXISTS change_password_requests (
+CREATE TABLE IF NOT EXISTS reset_password_requests (
     id      VARCHAR(36)         PRIMARY KEY,
     user_id VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS user_socials (
+    id          VARCHAR(36)         PRIMARY KEY,
+    user_id     VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE,
+    social      VARCHAR(100)        NOT NULL,
+    social_id   VARCHAR(36)         NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_events (
