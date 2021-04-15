@@ -31,7 +31,6 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	e.GET("/api/verify_signup", provider.UserHandler.SignUpVerification)
 	e.POST("/api/check_password", provider.UserHandler.CheckResetPassword)
 	e.GET("/api/check_password", provider.UserHandler.CheckResetPassword)
-	e.POST("/api/socials-registration", provider.UserHandler.SocialsSignUp)
 	e.POST("/api/socials-login", provider.UserHandler.SocialsSignIn)
 
 	// with bearer token

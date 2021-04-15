@@ -14,19 +14,24 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// @Summary Socials sign up
+// @Summary Socials sign in
 // @Tags authentication
 // @Consume application/json
 // @Param JSON body dto.SocialsSignInRequest true "body for sign up"
-// @Description User registration by socials (Facebook, Google, Apple, etc.)
+// @Description User login by socials (Facebook, Google, Apple, etc.). If user doesn't exist in DB, new account will be created.
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} dto.AuthResponse
 // @Failure 400 {object} errs.ErrResp
 // @Failure 500 {object} errs.ErrResp
-// @Router /api/socials-registration [post]
-func (h *Handler) SocialsSignUp(c echo.Context) error {
-	var req dto.SocialsSignInRequest
+// @Router /api/socials-login [post]
+func (h *Handler) SocialsSignIn(c echo.Context) error {
+	var (
+		req      dto.SocialsSignInRequest
+		uid      string
+		email    string
+		username string
+	)
 
 	err := c.Bind(&req)
 	if err != nil {
@@ -34,18 +39,19 @@ func (h *Handler) SocialsSignUp(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, errs.BadParamInBodyErr)
 	}
 
-	_, err = h.userSocialsDB.GetByID(req.ID)
+	userSocial, err := h.userSocialsDB.GetByID(req.ID)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
 			// create an account
-			uid := uuid.New().String()
-			username := fmt.Sprintf("%s-%s", req.Social, utils.GenerateName())
+			uid = uuid.New().String()
+			username = fmt.Sprintf("%s-%s", req.Social, utils.GenerateName())
+			email = fmt.Sprintf("%s - no email", username)
 			err = h.usersDB.Insert(models.User{
 				ID:             uid,
 				Username:       username,
 				HashedPassword: "no_pass_social_registration",
-				Email:          fmt.Sprintf("%s - no email", username),
+				Email:          email,
 				DateOfBirth:    time.Now().Unix(),
 				Gender:         "none",
 				Membership:     "none",
@@ -72,30 +78,44 @@ func (h *Handler) SocialsSignUp(c echo.Context) error {
 				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 			}
 
-			token, err := utils.GenerateJWT(uid, "user", h.authKey)
-			if err != nil {
-				h.log.WithError(err).Error("failed to generate jwt token")
-				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-			}
-
-			return c.JSON(http.StatusOK, dto.AuthResponse{
-				ID:          uid,
-				Username:    username,
-				Email:       fmt.Sprintf("%s - no email", username),
-				Token:       token,
-				DateOfBirth: time.Now().Unix(),
-				Gender:      "none",
-				Membership:  "none",
-				AvatarData:  "none",
-				Rate:        0,
-			})
-
 		default:
 			h.log.WithError(err).Error("failed to get user social from db by ID")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 		}
+	} else {
+		// get existed account
+		user, err := h.usersDB.GetByID(userSocial.UserID)
+		if err != nil {
+			switch err {
+			case sql.ErrNoRows:
+				h.log.WithError(err).Error("user doesn't exist")
+				return c.JSON(http.StatusInternalServerError, errs.UserDoesntExistErr)
+			default:
+				h.log.WithError(err).Error("failed to get user from db by email")
+				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+			}
+		}
+
+		uid = user.ID
+		username = user.Username
+		email = user.Email
 	}
 
-	h.log.Error("user social already exists")
-	return c.JSON(http.StatusConflict, errs.UserSocialAlreadyExistsErr)
+	token, err := utils.GenerateJWT(uid, "user", h.authKey)
+	if err != nil {
+		h.log.WithError(err).Error("failed to generate jwt token")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	return c.JSON(http.StatusOK, dto.AuthResponse{
+		ID:          uid,
+		Username:    username,
+		Email:       email,
+		Token:       token,
+		DateOfBirth: time.Now().Unix(),
+		Gender:      "none",
+		Membership:  "none",
+		AvatarData:  "none",
+		Rate:        0,
+	})
 }

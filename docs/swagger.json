@@ -1,10 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "REST API for Novels app.",
+        "description": "REST API for Novels app.\nNew in version:\u003cbr\u003e - socials sign up was deleted. Now we have 1 endpoint for signin/signup.\u003cbr\u003e - some minor fixes",
         "title": "Novels REST API",
         "contact": {},
-        "version": "0.0.1"
+        "version": "0.0.2"
     },
     "host": "165.227.207.77:8000",
     "basePath": "/",
@@ -200,7 +200,7 @@
         },
         "/api/socials-login": {
             "post": {
-                "description": "User login by socials (Facebook, Google, Apple, etc.)",
+                "description": "User login by socials (Facebook, Google, Apple, etc.). If user doesn't exist in DB, new account will be created.",
                 "consumes": [
                     "application/json"
                 ],
@@ -211,52 +211,6 @@
                     "authentication"
                 ],
                 "summary": "Socials sign in",
-                "parameters": [
-                    {
-                        "description": "body for login",
-                        "name": "JSON",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.SocialsSignInRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.AuthResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/ErrResp"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/socials-registration": {
-            "post": {
-                "description": "User registration by socials (Facebook, Google, Apple, etc.)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Socials sign up",
                 "parameters": [
                     {
                         "description": "body for sign up",

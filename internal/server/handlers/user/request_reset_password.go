@@ -76,7 +76,7 @@ func (h *Handler) RequestResetPassword(c echo.Context) error {
 		URL  string
 		Name string
 	}{
-		URL:  fmt.Sprintf("https://165.227.207.77:8000/check_password?token=%s", token),
+		URL:  fmt.Sprintf("https://165.227.207.77:8000/api/check_password?token=%s", token),
 		Name: user.Username,
 	}
 

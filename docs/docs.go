@@ -215,7 +215,7 @@ var doc = `{
         },
         "/api/socials-login": {
             "post": {
-                "description": "User login by socials (Facebook, Google, Apple, etc.)",
+                "description": "User login by socials (Facebook, Google, Apple, etc.). If user doesn't exist in DB, new account will be created.",
                 "consumes": [
                     "application/json"
                 ],
@@ -226,52 +226,6 @@ var doc = `{
                     "authentication"
                 ],
                 "summary": "Socials sign in",
-                "parameters": [
-                    {
-                        "description": "body for login",
-                        "name": "JSON",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.SocialsSignInRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.AuthResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/ErrResp"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/socials-registration": {
-            "post": {
-                "description": "User registration by socials (Facebook, Google, Apple, etc.)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Socials sign up",
                 "parameters": [
                     {
                         "description": "body for sign up",
@@ -484,12 +438,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.1",
+	Version:     "0.0.2",
 	Host:        "165.227.207.77:8000",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Novels REST API",
-	Description: "REST API for Novels app.",
+	Description: "REST API for Novels app.\nNew in version:<br> - socials sign up was deleted. Now we have 1 endpoint for signin/signup.<br> - some minor fixes",
 }
 
 type s struct{}

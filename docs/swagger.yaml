@@ -83,9 +83,11 @@ definitions:
 host: 165.227.207.77:8000
 info:
   contact: {}
-  description: REST API for Novels app.
+  description: |-
+    REST API for Novels app.
+    New in version:<br> - socials sign up was deleted. Now we have 1 endpoint for signin/signup.<br> - some minor fixes
   title: Novels REST API
-  version: 0.0.1
+  version: 0.0.2
 paths:
   /api/guest-registration:
     post:
@@ -213,37 +215,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: User login by socials (Facebook, Google, Apple, etc.)
-      parameters:
-      - description: body for login
-        in: body
-        name: JSON
-        required: true
-        schema:
-          $ref: '#/definitions/dto.SocialsSignInRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.AuthResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrResp'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrResp'
-      summary: Socials sign in
-      tags:
-      - authentication
-  /api/socials-registration:
-    post:
-      consumes:
-      - application/json
-      description: User registration by socials (Facebook, Google, Apple, etc.)
+      description: User login by socials (Facebook, Google, Apple, etc.). If user
+        doesn't exist in DB, new account will be created.
       parameters:
       - description: body for sign up
         in: body
@@ -266,7 +239,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/ErrResp'
-      summary: Socials sign up
+      summary: Socials sign in
       tags:
       - authentication
   /api/user-info:
