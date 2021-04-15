@@ -1,0 +1,233 @@
+basePath: /
+definitions:
+  ErrResp:
+    properties:
+      code:
+        example: 500
+        type: integer
+      message:
+        example: INTERNAL_SERVER_ERROR
+        type: string
+    type: object
+  dto.AuthResponse:
+    properties:
+      avatarData:
+        example: avatar_data
+        type: string
+      dateOfBith:
+        example: 12345672
+        type: integer
+      email:
+        example: my@testmail.com
+        type: string
+      gender:
+        example: male
+        type: string
+      id:
+        example: some_id
+        type: string
+      membership:
+        example: some_info
+        type: string
+      rate:
+        example: 0
+        type: integer
+      token:
+        example: someSuperseCretToken.ForuseRAuthoriZATIon
+        type: string
+      username:
+        example: awesome_user
+        type: string
+    type: object
+  dto.GuestSignInRequest:
+    properties:
+      deviceId:
+        example: thisIsMyDeviceId
+        type: string
+    type: object
+  dto.ResetPasswordRequest:
+    properties:
+      email:
+        example: myemail@mail.com
+        type: string
+    type: object
+  dto.SignInRequest:
+    properties:
+      login:
+        example: test_login
+        type: string
+      password:
+        example: supersecretpassword
+        type: string
+    type: object
+  dto.SignUpRequest:
+    properties:
+      deviceId:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: REST API for Novels app.
+  title: Novels REST API
+  version: 0.0.1
+paths:
+  /api/guest-registration:
+    post:
+      consumes:
+      - application/json
+      description: Sign in like a guest (without progress saving)
+      parameters:
+      - description: Body for guest sign in
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GuestSignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      summary: Guest sign in
+      tags:
+      - authentication
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Sign in with login and password
+      parameters:
+      - description: Body for sign in
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      summary: Sign in
+      tags:
+      - authentication
+  /api/registration:
+    post:
+      consumes:
+      - application/json
+      description: User registraton by email and password
+      parameters:
+      - description: Body for sign up
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      summary: Sign up
+      tags:
+      - authentication
+  /api/reset_password_request:
+    post:
+      consumes:
+      - application/json
+      description: Reset your account password
+      parameters:
+      - description: email for reset password
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Reset password request
+      tags:
+      - authentication
+  /api/user-info:
+    get:
+      consumes:
+      - application/json
+      description: Get user info by user ID from bearer token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Get user info
+      tags:
+      - authentication
+securityDefinitions:
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

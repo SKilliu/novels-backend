@@ -11,9 +11,20 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// @Summary Sign in
+// @Tags authentication
+// @Consume application/json
+// @Param JSON body dto.SignInRequest true "Body for sign in"
+// @Description Sign in with login and password
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.AuthResponse
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /api/login [post]
 func (h *Handler) SignIn(c echo.Context) error {
 	var (
-		req  dto.SignInReq
+		req  dto.SignInRequest
 		resp dto.AuthResponse
 	)
 

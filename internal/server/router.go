@@ -6,8 +6,10 @@ import (
 	"github.com/SKilliu/novels-backend/internal/server/middlewares"
 	"github.com/sirupsen/logrus"
 
+	_ "github.com/SKilliu/novels-backend/docs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func NewRouter(logger *logrus.Entry) *echo.Echo {
@@ -19,6 +21,8 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	m := middlewares.New(authConfig.VerifyKey)
 
 	provider := NewProvider(logger, authConfig)
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	e.GET("/", healthz)
 	e.POST("/api/registration", provider.UserHandler.SignUp)

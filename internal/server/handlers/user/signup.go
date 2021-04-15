@@ -21,6 +21,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary Sign up
+// @Tags authentication
+// @Consume application/json
+// @Param JSON body dto.SignUpRequest true "Body for sign up"
+// @Description User registraton by email and password
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.AuthResponse
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /api/registration [post]
 func (h *Handler) SignUp(c echo.Context) error {
 	var (
 		req dto.SignUpRequest

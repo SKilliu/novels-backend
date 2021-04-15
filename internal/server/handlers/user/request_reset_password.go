@@ -17,9 +17,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary Reset password request
+// @Security bearerAuth
+// @Tags authentication
+// @Consume application/json
+// @Param JSON body dto.ResetPasswordRequest true "email for reset password"
+// @Description Reset your account password
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.AuthResponse
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /api/reset_password_request [post]
 func (h *Handler) RequestResetPassword(c echo.Context) error {
-	var req dto.SignInReq
-
+	var req dto.ResetPasswordRequest
 	err := c.Bind(&req)
 	if err != nil {
 		h.log.WithError(err).Error("failed to parse change password request")

@@ -10,6 +10,14 @@ import (
 
 const pathToConfigFile = "./envs.yaml"
 
+// @title Novels REST API
+// @version 0.0.1
+// @description REST API for Novels app.
+// @securityDefinitions.apiKey bearerAuth
+// @in header
+// @name Authorization
+// @host 165.227.207.77:8000
+// @BasePath /
 func main() {
 	log := logrus.New()
 	logger := logrus.NewEntry(log)
