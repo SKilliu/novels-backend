@@ -14,7 +14,8 @@ type QInterface interface {
 	DBX() *dbx.DB
 
 	UsersQ() UsersQ
-	ChangePassRequestsQ() ChangePassRequestsQ
+	ResetPassRequestsQ() ResetPassRequestsQ
+	UserSocialsQ() UserSocialsQ
 }
 
 // DB wraps dbx interface.

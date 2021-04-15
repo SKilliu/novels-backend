@@ -46,7 +46,7 @@ func (h *Handler) RequestResetPassword(c echo.Context) error {
 
 	token := uuid.New().String()
 
-	err = h.changePassRequestsDB.Insert(models.ChangePassRequest{
+	err = h.changePassRequestsDB.Insert(models.ResetPassRequest{
 		ID:     token,
 		UserID: user.ID,
 	})

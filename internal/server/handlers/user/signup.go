@@ -73,7 +73,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 				Username:       req.Username,
 				HashedPassword: string(passwordBytes),
 				Email:          req.Email,
-				DeviceID:       req.DeviceID,
+				DeviceID:       "registered",
 				DateOfBirth:    time.Now().Unix(),
 				IsRegistered:   true,
 			})
@@ -92,6 +92,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 	user.Username = req.Username
 	user.Email = req.Email
 	user.HashedPassword = string(passwordBytes)
+	user.DeviceID = "registered"
 
 	err = h.usersDB.Update(user)
 	if err != nil {
