@@ -116,7 +116,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 		URL  string
 		Name string
 	}{
-		URL:  fmt.Sprintf("https://localhost:8000/verify_signup?token=%s", uid),
+		URL:  fmt.Sprintf("https://165.227.207.77:8000/verify_signup?token=%s", uid),
 		Name: req.Username,
 	}
 
