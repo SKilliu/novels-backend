@@ -71,6 +71,15 @@ definitions:
       username:
         type: string
     type: object
+  dto.SocialsSignInRequest:
+    properties:
+      deviceId:
+        type: string
+      id:
+        type: string
+      social:
+        type: string
+    type: object
 host: 165.227.207.77:8000
 info:
   contact: {}
@@ -198,6 +207,66 @@ paths:
       security:
       - bearerAuth: []
       summary: Reset password request
+      tags:
+      - authentication
+  /api/socials-login:
+    post:
+      consumes:
+      - application/json
+      description: User login by socials (Facebook, Google, Apple, etc.)
+      parameters:
+      - description: body for login
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SocialsSignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      summary: Socials sign in
+      tags:
+      - authentication
+  /api/socials-registration:
+    post:
+      consumes:
+      - application/json
+      description: User registration by socials (Facebook, Google, Apple, etc.)
+      parameters:
+      - description: body for sign up
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SocialsSignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      summary: Socials sign up
       tags:
       - authentication
   /api/user-info:

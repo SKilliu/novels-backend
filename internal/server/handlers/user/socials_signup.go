@@ -14,6 +14,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary Socials sign up
+// @Tags authentication
+// @Consume application/json
+// @Param JSON body dto.SocialsSignInRequest true "body for sign up"
+// @Description User registration by socials (Facebook, Google, Apple, etc.)
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.AuthResponse
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /api/socials-registration [post]
 func (h *Handler) SocialsSignUp(c echo.Context) error {
 	var req dto.SocialsSignInRequest
 
