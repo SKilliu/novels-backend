@@ -14,8 +14,19 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary Guest sign in
+// @Tags authentication
+// @Consume application/json
+// @Param JSON body dto.GuestSignInRequest true "Body for guest sign in"
+// @Description Sign in like a guest (without progress saving)
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.AuthResponse
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /api/guest-registration [post]
 func (h *Handler) GuestSignIn(c echo.Context) error {
-	var req dto.SignUpRequest
+	var req dto.GuestSignInRequest
 
 	err := c.Bind(&req)
 	if err != nil {

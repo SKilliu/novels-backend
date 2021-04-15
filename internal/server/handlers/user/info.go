@@ -11,6 +11,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary Get user info
+// @Security bearerAuth
+// @Tags authentication
+// @Consume application/json
+// @Description Get user info by user ID from bearer token
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.AuthResponse
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /api/user-info [get]
 func (h *Handler) GetInfo(c echo.Context) error {
 
 	userID, _, err := middlewares.GetUserIDFromJWT(c.Request(), h.authKey)
