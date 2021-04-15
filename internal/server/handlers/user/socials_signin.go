@@ -59,7 +59,7 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 				DeviceID:       "registered",
 				Rate:           0,
 				IsRegistered:   true,
-				IsVerified:     false,
+				IsVerified:     true,
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to insert new user into db")
