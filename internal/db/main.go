@@ -16,6 +16,8 @@ type QInterface interface {
 	UsersQ() UsersQ
 	ResetPassRequestsQ() ResetPassRequestsQ
 	UserSocialsQ() UserSocialsQ
+	NovelsQ() NovelsQ
+	CompetitionsQ() CompetitionsQ
 }
 
 // DB wraps dbx interface.

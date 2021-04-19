@@ -15,7 +15,7 @@ import (
 )
 
 // @Summary Socials sign in
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Param JSON body dto.SocialsSignInRequest true "body for sign up"
 // @Description User login by socials (Facebook, Google, Apple, etc.). If user doesn't exist in DB, new account will be created.

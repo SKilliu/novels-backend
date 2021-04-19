@@ -13,7 +13,7 @@ import (
 
 // @Summary Get user info
 // @Security bearerAuth
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Description Get user info by user ID from bearer token
 // @Accept  json

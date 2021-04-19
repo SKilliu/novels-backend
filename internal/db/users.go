@@ -8,8 +8,10 @@ import (
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )
 
-var checkUserByUsernameQuery = `SELECT EXISTS (SELECT * FROM users WHERE username = '%s' LIMIT 1);`
-var checkUserByEmailQuery = `SELECT EXISTS (SELECT * FROM users WHERE email = '%s' LIMIT 1);`
+var (
+	checkUserByUsernameQuery = `SELECT EXISTS (SELECT * FROM users WHERE username = '%s' LIMIT 1);`
+	checkUserByEmailQuery    = `SELECT EXISTS (SELECT * FROM users WHERE email = '%s' LIMIT 1);`
+)
 
 // UsersQ query interface, which provide access to DB functions.
 type UsersQ interface {
@@ -21,6 +23,7 @@ type UsersQ interface {
 	CheckUserByEmail(email string) (models.IsExists, error)
 	GetByID(uid string) (models.User, error)
 	GetByDeviceID(deviceID string) (models.User, error)
+	GetOpponentsByRate(rate int) ([]models.User, error)
 }
 
 // UsersWrapper wraps interface.
@@ -81,4 +84,10 @@ func (u UsersWrapper) GetByDeviceID(deviceID string) (models.User, error) {
 	var user models.User
 	err := u.parent.db.Select().Where(dbx.HashExp{"device_id": deviceID}).From(models.UsersTableName).One(&user)
 	return user, err
+}
+
+func (u UsersWrapper) GetOpponentsByRate(rate int) ([]models.User, error) {
+	var res []models.User
+	err := u.parent.db.Select().From(models.UsersTableName).Where(dbx.HashExp{"rate": rate}).All(&res)
+	return res, err
 }

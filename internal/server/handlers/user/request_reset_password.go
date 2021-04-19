@@ -19,7 +19,7 @@ import (
 
 // @Summary Reset password request
 // @Security bearerAuth
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Param JSON body dto.ResetPasswordRequest true "email for reset password"
 // @Description Reset your account password

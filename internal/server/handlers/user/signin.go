@@ -12,7 +12,7 @@ import (
 )
 
 // @Summary Sign in
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Param JSON body dto.SignInRequest true "Body for sign in"
 // @Description Sign in with login and password

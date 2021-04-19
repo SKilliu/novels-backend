@@ -28,4 +28,5 @@ var (
 	EmptyQueryParamErr         = ErrResp{"QUERY_PARAM_IS_EMPTY", http.StatusBadRequest}
 	NotVerifiedAccountErr      = ErrResp{"NOT_VERIFIED_ACCOUNT", http.StatusForbidden}
 	UserSocialAlreadyExistsErr = ErrResp{"USER_SOCIAL_ALREADY_EXISTS", http.StatusConflict}
+	NovelDoesntExistErr        = ErrResp{"NOVEL_DOESNT_EXIST", http.StatusConflict}
 )

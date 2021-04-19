@@ -25,10 +25,33 @@ CREATE TABLE IF NOT EXISTS user_socials (
     social_id   VARCHAR(36)         NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_events (
-    id varchar(36) primary key,
-    user_id varchar(36) references users (id) on delete cascade,
-    device_id varchar(255) NOT NULL,
-    data jsonb,
-    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+CREATE TABLE IF NOT EXISTS novels (
+    id                          VARCHAR(36)         PRIMARY KEY,
+    user_id                     VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE,
+    title                       VARCHAR(255)        NOT NULL,
+    data                        VARCHAR(500)        NOT NULL,
+    participated_in_competiton BOOLEAN             NOT NULL DEFAULT false,
+    created_at                  INTEGER             NOT NULL DEFAULT 0,
+    updated_at                  INTEGER             NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS competition_info (
+    id                  VARCHAR(36)         PRIMARY KEY,
+    novels_pool_id      VARCHAR(36)         REFERENCES novels_pool (id) ON DELETE CASCADE
+    novel_id            VARCHAR(36)         NOT NULL,
+    voter_id            VARCHAR(36)         NOT NULL,
+    is_viewed           BOOLEAN             NOT NULL,
+    is_voted            BOOLEAN             NOT NULL
+); 
+
+CREATE TABLE IF NOT EXISTS novels_pool (
+    id                      VARCHAR(36)         PRIMARY KEY,
+    novel_one_id            VARCHAR(36)         NOT NULL,
+    novel_two_id            VARCHAR(36)         NOT NULL,
+    competition_started_at  INTEGER             NOT NULL,
+    status                  VARCHAR(50)         NOT NULL,
+    novel_one_votes         INTEGER             NOT NULL,
+    novel_two_votes         INTEGER             NOT NULL,
+    created_at              INTEGER             NOT NULL,
+    updated_at              INTEGER             NOT NULL        
+);
