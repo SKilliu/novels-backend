@@ -11,13 +11,13 @@ import (
 const pathToConfigFile = "./envs.yaml"
 
 // @title Novels REST API
-// @version 0.0.2
+// @version 0.0.3
 // @description REST API for Novels app.
-// @description New in version:<br> - socials sign up was deleted. Now we have 1 endpoint for signin/signup.<br> - some minor fixes
+// @description New in version:<br> - added andpoints for competitions
 // @securityDefinitions.apiKey bearerAuth
 // @in header
 // @name Authorization
-// @host 165.227.207.77:8000
+// @host localhost:8000
 // @BasePath /
 func main() {
 	log := logrus.New()

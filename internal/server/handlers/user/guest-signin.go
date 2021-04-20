@@ -15,7 +15,7 @@ import (
 )
 
 // @Summary Guest sign in
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Param JSON body dto.GuestSignInRequest true "Body for guest sign in"
 // @Description Sign in like a guest (without progress saving)

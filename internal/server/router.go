@@ -34,8 +34,22 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	e.POST("/api/socials-login", provider.UserHandler.SocialsSignIn)
 
 	// with bearer token
+
+	// user handlers
 	e.GET("/api/user-info", provider.UserHandler.GetInfo, m.ParseToken)
 	e.POST("/api/reset_password_request", provider.UserHandler.RequestResetPassword, m.ParseToken)
+
+	// novel handlers
+	e.POST("/api/novel/create", provider.NovelHandler.Create, m.ParseToken)
+	e.DELETE("/api/novel/delete", provider.NovelHandler.Delete, m.ParseToken)
+	e.PUT("/api/novel/update", provider.NovelHandler.Update, m.ParseToken)
+	e.GET("/api/novel/list", provider.NovelHandler.List, m.ParseToken)
+
+	// competition handlers
+	e.GET("/api/competition/own/get/", provider.CompetitionHandler.GetOwnCompetition, m.ParseToken)
+	e.GET("/api/competition/own/list", provider.CompetitionHandler.List, m.ParseToken)
+	e.GET("/api/competition/ready_for_vote", provider.CompetitionHandler.ReadyForVote, m.ParseToken)
+	e.POST("/api/competition/vote", provider.CompetitionHandler.Vote, m.ParseToken)
 
 	return e
 }

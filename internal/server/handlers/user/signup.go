@@ -22,7 +22,7 @@ import (
 )
 
 // @Summary Sign up
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Param JSON body dto.SignUpRequest true "Body for sign up"
 // @Description User registraton by email and password

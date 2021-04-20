@@ -19,7 +19,7 @@ import (
 
 // @Summary Reset password request
 // @Security bearerAuth
-// @Tags authentication
+// @Tags Authentication
 // @Consume application/json
 // @Param JSON body dto.ResetPasswordRequest true "email for reset password"
 // @Description Reset your account password
@@ -48,7 +48,7 @@ func (h *Handler) RequestResetPassword(c echo.Context) error {
 		switch err {
 		case sql.ErrNoRows:
 			h.log.WithError(err).Error("user doesn't exist")
-			return c.JSON(http.StatusInternalServerError, errs.UserDoesntExistErr)
+			return c.JSON(http.StatusInternalServerError, errs.UserNotFoundErr)
 		default:
 			h.log.WithError(err).Error("failed to get user from db by ID")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)

@@ -21,11 +21,17 @@ var (
 	NotValidBodyParamErr       = ErrResp{"NOT_VALID_BODY_PARAM", http.StatusBadRequest}
 	EmailAlreadyExistErr       = ErrResp{"EMAIL_ALREADY_EXISTS", http.StatusConflict}
 	UsernameAlreadyExistsErr   = ErrResp{"USERNAME_ALREADY_EXISTS", http.StatusConflict}
-	UserDoesntExistErr         = ErrResp{"USER_DOESNT_EXIST", http.StatusBadRequest}
+	UserNotFoundErr            = ErrResp{"USER_NOT_FOUND", http.StatusBadRequest}
 	WrongCredentialsErr        = ErrResp{"WRONG_EMAIL_OR_PASS", http.StatusBadRequest}
 	NoDataInFormErr            = ErrResp{"NO_DATA_IN_FORM", http.StatusBadRequest}
 	IncorrectAccountTypeErr    = ErrResp{"INCORRECT_ACCOUNT_TYPE", http.StatusForbidden}
 	EmptyQueryParamErr         = ErrResp{"QUERY_PARAM_IS_EMPTY", http.StatusBadRequest}
 	NotVerifiedAccountErr      = ErrResp{"NOT_VERIFIED_ACCOUNT", http.StatusForbidden}
 	UserSocialAlreadyExistsErr = ErrResp{"USER_SOCIAL_ALREADY_EXISTS", http.StatusConflict}
+	NovelNotFoundErr           = ErrResp{"NOVEL_NOT_FOUND", http.StatusBadRequest}
+	CompetitonNotFoundErr      = ErrResp{"COMPETITION_NOT_FOUND", http.StatusBadRequest}
+	QueryParamIsNotValidErr    = ErrResp{"NOT_VALID_QUERY_PARAM", http.StatusBadRequest}
+	CompetitionIsNotActiveErr  = ErrResp{"COMPETITION_IS_NOT_ACTIVE", http.StatusConflict}
+	IncorrectUserForVotingErr  = ErrResp{"INCORRECT_USER_FOR_VOTING", http.StatusConflict}
+	UserAlreadyVotedErr        = ErrResp{"USER_ALREADY_VOTED", http.StatusConflict}
 )
