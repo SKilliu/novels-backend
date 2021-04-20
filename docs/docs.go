@@ -24,6 +24,223 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/competition/own/get/": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Get own competition by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Competitions"
+                ],
+                "summary": "Get own competition",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "novel_id in db",
+                        "name": "novel_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CompetitionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/competition/own/list": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Get competitions list by status, sorting and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Competitions"
+                ],
+                "summary": "Competitions list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "can be \u003cb\u003ewaiting_for_opponent\u003c/b\u003e, \u003cb\u003estarted\u003c/b\u003e, \u003cb\u003eexpired\u003c/b\u003e, \u003cb\u003efinished\u003c/b\u003e or can be skipped",
+                        "name": "status",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "name of sorting field",
+                        "name": "sort_field",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "asc or desc",
+                        "name": "sort_order",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit of items on page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CompetitionResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/competition/ready_for_vote": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Get novels pair for vote",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Competitions"
+                ],
+                "summary": "Get novels for vote",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CompetitionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/competition/vote": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Vote for a one of two novels in competition",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Competitions"
+                ],
+                "summary": "Vote for a novel",
+                "parameters": [
+                    {
+                        "description": "body for a voting",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VoteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/guest-registration": {
             "post": {
                 "description": "Sign in like a guest (without progress saving)",
@@ -549,7 +766,7 @@ var doc = `{
                     "type": "string",
                     "example": "avatar_data"
                 },
-                "dateOfBith": {
+                "dateOfBirth": {
                     "type": "integer",
                     "example": 12345672
                 },
@@ -583,6 +800,34 @@ var doc = `{
                 }
             }
         },
+        "dto.CompetitionResponse": {
+            "type": "object",
+            "properties": {
+                "competitionStartedAt": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "integer",
+                    "example": 121342424
+                },
+                "id": {
+                    "type": "string"
+                },
+                "novel1": {
+                    "$ref": "#/definitions/dto.NovelData"
+                },
+                "novel2": {
+                    "$ref": "#/definitions/dto.NovelData"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "integer",
+                    "example": 1654726235
+                }
+            }
+        },
         "dto.CreateNovelRequest": {
             "type": "object",
             "properties": {
@@ -602,6 +847,38 @@ var doc = `{
                 "deviceId": {
                     "type": "string",
                     "example": "thisIsMyDeviceId"
+                }
+            }
+        },
+        "dto.NovelData": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "integer",
+                    "example": 121342424
+                },
+                "data": {
+                    "type": "string",
+                    "example": "My awesome true story!"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "some_id"
+                },
+                "participatedInCompetition": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "title": {
+                    "type": "string",
+                    "example": "My new novel"
+                },
+                "updatedAt": {
+                    "type": "integer",
+                    "example": 1654726235
+                },
+                "user": {
+                    "$ref": "#/definitions/dto.UserData"
                 }
             }
         },
@@ -703,6 +980,40 @@ var doc = `{
                     "example": "My new novel"
                 }
             }
+        },
+        "dto.UserData": {
+            "type": "object",
+            "properties": {
+                "dateOfBith": {
+                    "type": "integer",
+                    "example": 12345672
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "membership": {
+                    "type": "string",
+                    "example": "some_info"
+                },
+                "rate": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "username": {
+                    "type": "string",
+                    "example": "awesome_user"
+                }
+            }
+        },
+        "dto.VoteRequest": {
+            "type": "object",
+            "properties": {
+                "novel_id": {
+                    "type": "string",
+                    "example": "some-NovEL_ID"
+                }
+            }
         }
     },
     "securityDefinitions": {
@@ -725,12 +1036,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.2",
+	Version:     "0.0.3",
 	Host:        "localhost:8000",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Novels REST API",
-	Description: "REST API for Novels app.\nNew in version:<br> - socials sign up was deleted. Now we have 1 endpoint for signin/signup.<br> - some minor fixes",
+	Description: "REST API for Novels app.\nNew in version:<br> - added andpoints for competitions",
 }
 
 type s struct{}

@@ -1,6 +1,6 @@
-"server_host": localhost
+"server_host": 165.227.207.77
 "server_port": 8000
-"server_ssl": false
+"server_ssl": true
 "server_cert_path": ./ssl/server.crt
 "server_cert_key": ./ssl/server.key
 "authentication_secret": wehhbsdyvdsyfvyyGYFYTFDGSHUJSIffkhsdbcjhdsbchsaca

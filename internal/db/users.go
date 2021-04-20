@@ -23,7 +23,7 @@ type UsersQ interface {
 	CheckUserByEmail(email string) (models.IsExists, error)
 	GetByID(uid string) (models.User, error)
 	GetByDeviceID(deviceID string) (models.User, error)
-	GetOpponentsByRate(rate int) ([]models.User, error)
+	GetAllForVote(userOneID, userTwoID string) ([]models.User, error)
 }
 
 // UsersWrapper wraps interface.
@@ -86,8 +86,8 @@ func (u UsersWrapper) GetByDeviceID(deviceID string) (models.User, error) {
 	return user, err
 }
 
-func (u UsersWrapper) GetOpponentsByRate(rate int) ([]models.User, error) {
+func (u UsersWrapper) GetAllForVote(userOneID, userTwoID string) ([]models.User, error) {
 	var res []models.User
-	err := u.parent.db.Select().From(models.UsersTableName).Where(dbx.HashExp{"rate": rate}).All(&res)
+	err := u.parent.db.Select().From(models.UsersTableName).Where(dbx.NotIn("id", userOneID, userTwoID)).All(&res)
 	return res, err
 }

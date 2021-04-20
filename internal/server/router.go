@@ -45,6 +45,12 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	e.PUT("/api/novel/update", provider.NovelHandler.Update, m.ParseToken)
 	e.GET("/api/novel/list", provider.NovelHandler.List, m.ParseToken)
 
+	// competition handlers
+	e.GET("/api/competition/own/get/", provider.CompetitionHandler.GetOwnCompetition, m.ParseToken)
+	e.GET("/api/competition/own/list", provider.CompetitionHandler.List, m.ParseToken)
+	e.GET("/api/competition/ready_for_vote", provider.CompetitionHandler.ReadyForVote, m.ParseToken)
+	e.POST("/api/competition/vote", provider.CompetitionHandler.Vote, m.ParseToken)
+
 	return e
 }
 

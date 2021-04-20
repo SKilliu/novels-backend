@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	getCompetitionsListWithParamQuery = `SELECT * FROM novels WHERE data LIKE %s ORDER BY %s %s OFFSET %d LIMIT %d;`
-	getOpponentQuery                  = "SELECT * FROM users WHERE id = (SELECT user_id FROM novels WHERE id IN (SELECT novel_one_id FROM competitions WHERE status = 'waiting_for_opponent') LIMIT 1) LIMIT 1;"
+	getCompetitionsListWithParamQuery = `SELECT * FROM novels_pool WHERE (status = '%s' AND user_one_id = '%s') OR (status = '%s' AND user_two_id = '%s') ORDER BY %s %s OFFSET %d LIMIT %d;`
+	getOpponentQuery                  = "SELECT * FROM novels_pool WHERE novel_one_id IN (SELECT id FROM novels WHERE user_id IN (SELECT id FROM users WHERE rate = %d AND NOT id = '%s')) AND status = 'waiting_for_opponent' LIMIT 1;"
 )
 
 // UsersQ query interface, which provide access to DB functions.
@@ -18,8 +18,10 @@ type CompetitionsQ interface {
 	Update(competition models.Competition) error
 	Delete(competition models.Competition) error
 	GetByID(nid string) (models.Competition, error)
-	GetOpponentForStory(uid string) (models.Competition, error)
-	GetListWithParam(param, orderColumn, order string, offset, limit int) ([]models.Competition, error)
+	GetCompetitionOpponent(userRate int, userID string) (models.Competition, error)
+	GetByNovelOneID(nid string) (models.Competition, error)
+	GetByNovelID(nid string) (models.Competition, error)
+	GetListWithParam(param, uid, orderColumn, order string, offset, limit int) ([]models.Competition, error)
 }
 
 // UsersWrapper wraps interface.
@@ -52,18 +54,26 @@ func (c *CompetitionsWrapper) GetByID(nid string) (models.Competition, error) {
 	return novel, err
 }
 
-func (c *CompetitionsWrapper) GetListWithParam(param, orderColumn, order string, offset, limit int) ([]models.Competition, error) {
+func (c *CompetitionsWrapper) GetListWithParam(param, uid, orderColumn, order string, offset, limit int) ([]models.Competition, error) {
 	var res []models.Competition
-	err := c.parent.db.NewQuery(fmt.Sprintf(getCompetitionsListWithParamQuery, param, orderColumn, order, offset, limit)).All(&res)
+	err := c.parent.db.NewQuery(fmt.Sprintf(getCompetitionsListWithParamQuery, param, uid, param, uid, orderColumn, order, offset, limit)).All(&res)
 	return res, err
 }
 
-func (c *CompetitionsWrapper) GetOpponentForStory(uid string) (models.Competition, error) {
+func (c *CompetitionsWrapper) GetCompetitionOpponent(userRate int, userID string) (models.Competition, error) {
 	var res models.Competition
-	return res, nil
+	err := c.parent.db.NewQuery(fmt.Sprintf(getOpponentQuery, userRate, userID)).One(&res)
+	return res, err
 }
 
-func (c *CompetitionsWrapper) GetWaitingForOpponentByUserID(uid string) (models.Competition, error) {
+func (c *CompetitionsWrapper) GetByNovelOneID(nid string) (models.Competition, error) {
 	var res models.Competition
-	err := c.parent.db.Select().From(models.CompetitionsTableName).Where(dbx.HashExp{""})
+	err := c.parent.db.Select().From(models.CompetitionsTableName).Where(dbx.HashExp{"novel_one_id": nid}).One(&res)
+	return res, err
+}
+
+func (c *CompetitionsWrapper) GetByNovelID(nid string) (models.Competition, error) {
+	var res models.Competition
+	err := c.parent.db.Select().From(models.CompetitionsTableName).Where(dbx.HashExp{"novel_one_id": nid}).OrWhere(dbx.HashExp{"novel_two_id": nid}).One(&res)
+	return res, err
 }

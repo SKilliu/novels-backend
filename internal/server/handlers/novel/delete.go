@@ -28,7 +28,7 @@ func (h *Handler) Delete(c echo.Context) error {
 		switch err {
 		case sql.ErrNoRows:
 			h.log.WithError(err).Error("novel doesn't exist")
-			return c.JSON(http.StatusInternalServerError, errs.NovelDoesntExistErr)
+			return c.JSON(http.StatusInternalServerError, errs.NovelNotFoundErr)
 		default:
 			h.log.WithError(err).Error("failed to get user from db by email")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)

@@ -14,7 +14,7 @@ definitions:
       avatarData:
         example: avatar_data
         type: string
-      dateOfBith:
+      dateOfBirth:
         example: 12345672
         type: integer
       email:
@@ -39,6 +39,25 @@ definitions:
         example: awesome_user
         type: string
     type: object
+  dto.CompetitionResponse:
+    properties:
+      competitionStartedAt:
+        type: integer
+      createdAt:
+        example: 121342424
+        type: integer
+      id:
+        type: string
+      novel1:
+        $ref: '#/definitions/dto.NovelData'
+      novel2:
+        $ref: '#/definitions/dto.NovelData'
+      status:
+        type: string
+      updatedAt:
+        example: 1654726235
+        type: integer
+    type: object
   dto.CreateNovelRequest:
     properties:
       data:
@@ -53,6 +72,29 @@ definitions:
       deviceId:
         example: thisIsMyDeviceId
         type: string
+    type: object
+  dto.NovelData:
+    properties:
+      createdAt:
+        example: 121342424
+        type: integer
+      data:
+        example: My awesome true story!
+        type: string
+      id:
+        example: some_id
+        type: string
+      participatedInCompetition:
+        example: false
+        type: boolean
+      title:
+        example: My new novel
+        type: string
+      updatedAt:
+        example: 1654726235
+        type: integer
+      user:
+        $ref: '#/definitions/dto.UserData'
     type: object
   dto.NovelResponse:
     properties:
@@ -122,15 +164,179 @@ definitions:
         example: My new novel
         type: string
     type: object
+  dto.UserData:
+    properties:
+      dateOfBith:
+        example: 12345672
+        type: integer
+      gender:
+        example: male
+        type: string
+      membership:
+        example: some_info
+        type: string
+      rate:
+        example: 0
+        type: integer
+      username:
+        example: awesome_user
+        type: string
+    type: object
+  dto.VoteRequest:
+    properties:
+      novel_id:
+        example: some-NovEL_ID
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - socials sign up was deleted. Now we have 1 endpoint for signin/signup.<br> - some minor fixes
+    New in version:<br> - added andpoints for competitions
   title: Novels REST API
-  version: 0.0.2
+  version: 0.0.3
 paths:
+  /api/competition/own/get/:
+    get:
+      consumes:
+      - application/json
+      description: Get own competition by ID
+      parameters:
+      - description: novel_id in db
+        in: query
+        name: novel_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CompetitionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Get own competition
+      tags:
+      - Competitions
+  /api/competition/own/list:
+    get:
+      consumes:
+      - application/json
+      description: Get competitions list by status, sorting and pagination
+      parameters:
+      - description: can be <b>waiting_for_opponent</b>, <b>started</b>, <b>expired</b>,
+          <b>finished</b> or can be skipped
+        in: query
+        name: status
+        required: true
+        type: string
+      - description: name of sorting field
+        in: query
+        name: sort_field
+        required: true
+        type: string
+      - description: asc or desc
+        in: query
+        name: sort_order
+        required: true
+        type: string
+      - description: page number
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: limit of items on page
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.CompetitionResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Competitions list
+      tags:
+      - Competitions
+  /api/competition/ready_for_vote:
+    get:
+      consumes:
+      - application/json
+      description: Get novels pair for vote
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CompetitionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Get novels for vote
+      tags:
+      - Competitions
+  /api/competition/vote:
+    post:
+      consumes:
+      - application/json
+      description: Vote for a one of two novels in competition
+      parameters:
+      - description: body for a voting
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VoteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Vote for a novel
+      tags:
+      - Competitions
   /api/guest-registration:
     post:
       consumes:

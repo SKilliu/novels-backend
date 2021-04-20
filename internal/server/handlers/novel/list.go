@@ -7,6 +7,7 @@ import (
 
 	"github.com/SKilliu/novels-backend/internal/errs"
 	"github.com/SKilliu/novels-backend/internal/server/dto"
+	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/labstack/echo/v4"
 )
 
@@ -34,6 +35,12 @@ func (h *Handler) List(c echo.Context) error {
 	sortOrder := c.QueryParam("sort_order")
 	limitParam := c.QueryParam("limit")
 	pageParam := c.QueryParam("page")
+
+	err := paramValidation(sortField, sortOrder)
+	if err != nil {
+		h.log.WithError(err).Error("not valid params in query")
+		return c.JSON(http.StatusBadRequest, errs.QueryParamIsNotValidErr)
+	}
 
 	page, err := strconv.Atoi(pageParam)
 	if err != nil {
@@ -69,4 +76,25 @@ func (h *Handler) List(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, resp)
+}
+
+// paramValidation validates all params from request
+func paramValidation(sortField, sortOrder string) error {
+	err := validation.Validate(sortField,
+		validation.Required,
+		validation.In("data", "created_at", "updated_at", "title"),
+	)
+	if err != nil {
+		return err
+	}
+
+	err = validation.Validate(sortOrder,
+		validation.Required,
+		validation.In("asc", "desc", "ASC", "DESC"),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

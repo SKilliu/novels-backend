@@ -5,16 +5,19 @@ const CompetitionsTableName = "novels_pool"
 type Competition struct {
 	ID                   string `db:"id"`
 	NovelOneID           string `db:"novel_one_id"`
-	NOvelTwoID           string `db:"novel_two_id"`
-	CompatitionStartedAt uint64 `db:"competitionStartedAt"`
+	NovelTwoID           string `db:"novel_two_id"`
+	UserOneID            string `db:"user_one_id"`
+	UserTwoID            string `db:"user_two_id"`
+	CompetitionStartedAt int64  `db:"competition_started_at"`
 	Status               string `db:"status"`
-	CreatedAt            int64  `db:"createdAt" example:"121342424"`
-	UpdatedAt            int64  `db:"updatedAt" example:"1654726235"`
+	NovelOneVotes        int    `db:"novel_one_votes"`
+	NovelTwoVotes        int    `db:"novel_two_votes"`
+	CreatedAt            int64  `db:"created_at" example:"121342424"`
+	UpdatedAt            int64  `db:"updated_at" example:"1654726235"`
 }
 
 type CompetitionOpponent struct {
 	UserID string
-	
 }
 
 // TableName override function from DBX for notice which db relates to provided struct.

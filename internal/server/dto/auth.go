@@ -25,7 +25,7 @@ type AuthResponse struct {
 	Username    string `json:"username" example:"awesome_user"`
 	Email       string `json:"email" example:"my@testmail.com"`
 	Token       string `json:"token" example:"someSuperseCretToken.ForuseRAuthoriZATIon"`
-	DateOfBirth int64  `json:"dateOfBith" example:"12345672"`
+	DateOfBirth int64  `json:"dateOfBirth" example:"12345672"`
 	Gender      string `json:"gender" example:"male"`
 	Membership  string `json:"membership" example:"some_info"`
 	AvatarData  string `json:"avatarData" example:"avatar_data"`

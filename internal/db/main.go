@@ -18,6 +18,7 @@ type QInterface interface {
 	UserSocialsQ() UserSocialsQ
 	NovelsQ() NovelsQ
 	CompetitionsQ() CompetitionsQ
+	ReadyForVoteQ() ReadyForVoteQ
 }
 
 // DB wraps dbx interface.

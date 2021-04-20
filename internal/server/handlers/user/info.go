@@ -35,7 +35,7 @@ func (h *Handler) GetInfo(c echo.Context) error {
 		switch err {
 		case sql.ErrNoRows:
 			h.log.WithError(err).Error("user doesn't exist")
-			return c.JSON(http.StatusBadRequest, errs.UserDoesntExistErr)
+			return c.JSON(http.StatusBadRequest, errs.UserNotFoundErr)
 		default:
 			h.log.WithError(err).Error("failed to get user from db")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)

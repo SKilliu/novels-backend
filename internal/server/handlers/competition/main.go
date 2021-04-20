@@ -6,18 +6,21 @@ import (
 )
 
 type Handler struct {
-	log           *logrus.Entry
-	usersDB       db.UsersQ
-	novelsDB      db.NovelsQ
-	competitionDB db.CompetitionsQ
-	authKey       string
+	log            *logrus.Entry
+	usersDB        db.UsersQ
+	novelsDB       db.NovelsQ
+	competitionsDB db.CompetitionsQ
+	readyForVoteDB db.ReadyForVoteQ
+	authKey        string
 }
 
 func New(logger *logrus.Entry, authKey string) *Handler {
 	return &Handler{
-		log:      logger,
-		usersDB:  db.Connection().UsersQ(),
-		novelsDB: db.Connection().NovelsQ(),
-		authKey:  authKey,
+		log:            logger,
+		usersDB:        db.Connection().UsersQ(),
+		novelsDB:       db.Connection().NovelsQ(),
+		competitionsDB:  db.Connection().CompetitionsQ(),
+		readyForVoteDB: db.Connection().ReadyForVoteQ(),
+		authKey:        authKey,
 	}
 }

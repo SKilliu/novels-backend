@@ -10,6 +10,7 @@ type Handler struct {
 	usersDB        db.UsersQ
 	novelsDB       db.NovelsQ
 	competitionsDB db.CompetitionsQ
+	readyForVoteDB db.ReadyForVoteQ
 	authKey        string
 }
 
@@ -19,6 +20,7 @@ func New(logger *logrus.Entry, authKey string) *Handler {
 		usersDB:        db.Connection().UsersQ(),
 		novelsDB:       db.Connection().NovelsQ(),
 		competitionsDB: db.Connection().CompetitionsQ(),
+		readyForVoteDB: db.Connection().ReadyForVoteQ(),
 		authKey:        authKey,
 	}
 }

@@ -89,7 +89,7 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 			switch err {
 			case sql.ErrNoRows:
 				h.log.WithError(err).Error("user doesn't exist")
-				return c.JSON(http.StatusInternalServerError, errs.UserDoesntExistErr)
+				return c.JSON(http.StatusInternalServerError, errs.UserNotFoundErr)
 			default:
 				h.log.WithError(err).Error("failed to get user from db by email")
 				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
