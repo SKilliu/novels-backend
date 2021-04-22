@@ -17,7 +17,7 @@ const pathToConfigFile = "./envs.yaml"
 // @securityDefinitions.apiKey bearerAuth
 // @in header
 // @name Authorization
-// @host localhost:8000
+// @host 165.227.207.77:8000
 // @BasePath /
 func main() {
 	log := logrus.New()
