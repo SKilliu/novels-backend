@@ -17,11 +17,11 @@ import (
 // @Security bearerAuth
 // @Tags Competitions
 // @Consume application/json
-// @Param status query string true "can be <b>waiting_for_opponent</b>, <b>started</b>, <b>expired</b>, <b>finished</b> or can be skipped"
-// @Param sort_field query string true "name of sorting field"
-// @Param sort_order query string true "asc or desc"
-// @Param page query string true "page number"
-// @Param limit query string true "limit of items on page"
+// @Param status query string false "can be <b>waiting_for_opponent</b>, <b>started</b>, <b>expired</b>, <b>finished</b> or can be skipped"
+// @Param sort_field query string false "name of sorting field"
+// @Param sort_order query string false "asc or desc"
+// @Param page query string false "page number"
+// @Param limit query string false "limit of items on page"
 // @Description Get competitions list by status, sorting and pagination
 // @Accept  json
 // @Produce  json
@@ -38,11 +38,29 @@ func (h *Handler) List(c echo.Context) error {
 	limitParam := c.QueryParam("limit")
 	pageParam := c.QueryParam("page")
 
-	err := paramValidation(status, sortField, sortOrder)
-	if err != nil {
-		h.log.WithError(err).Error("not valid params in query")
-		return c.JSON(http.StatusBadRequest, errs.QueryParamIsNotValidErr)
+	// setup default params if any empty
+
+	if sortField == "" {
+		sortField = "created_at"
 	}
+
+	if sortOrder == "" {
+		sortOrder = "DESC"
+	}
+
+	if limitParam == "" {
+		limitParam = "1000"
+	}
+
+	if pageParam == "" {
+		pageParam = "1"
+	}
+
+	// err := paramValidation(status, sortField, sortOrder)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("not valid params in query")
+	// 	return c.JSON(http.StatusBadRequest, errs.QueryParamIsNotValidErr)
+	// }
 
 	userID, _, err := middlewares.GetUserIDFromJWT(c.Request(), h.authKey)
 	if err != nil {
@@ -62,11 +80,11 @@ func (h *Handler) List(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	// paramForQuery := fmt.Sprintf("'%s%s%s'", dto.PercentSymbol, status, dto.PercentSymbol)
+	paramForQuery := fmt.Sprintf("'%s%s%s'", dto.PercentSymbol, status, dto.PercentSymbol)
 
 	offset := page*limit - limit
 
-	competitions, err := h.competitionsDB.GetListWithParam(status, userID, sortField, sortOrder, offset, limit)
+	competitions, err := h.competitionsDB.GetListWithParam(paramForQuery, userID, sortField, sortOrder, offset, limit)
 	if err != nil {
 		h.log.WithError(err).Error("failed ot get competitions from db")
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
@@ -185,7 +203,7 @@ func (h *Handler) List(c echo.Context) error {
 func paramValidation(status, sortField, sortOrder string) error {
 	err := validation.Validate(status,
 		validation.Required,
-		validation.In(dto.StatusWaitingForOpponent, dto.StatusStarted, dto.StatusExpired, dto.StatusFinished),
+		validation.In(dto.StatusWaitingForOpponent, dto.StatusStarted, dto.StatusExpired, dto.StatusFinished, ""),
 	)
 	if err != nil {
 		return err
@@ -193,7 +211,7 @@ func paramValidation(status, sortField, sortOrder string) error {
 
 	err = validation.Validate(sortField,
 		validation.Required,
-		validation.In("competition_started_at", "created_at", "updated_at", "status"),
+		validation.In("competition_started_at", "created_at", "updated_at", "status", ""),
 	)
 	if err != nil {
 		return err
@@ -201,7 +219,7 @@ func paramValidation(status, sortField, sortOrder string) error {
 
 	err = validation.Validate(sortOrder,
 		validation.Required,
-		validation.In("asc", "desc", "ASC", "DESC"),
+		validation.In("asc", "desc", "ASC", "DESC", ""),
 	)
 	if err != nil {
 		return err

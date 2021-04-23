@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	getCompetitionsListWithParamQuery = `SELECT * FROM novels_pool WHERE (status = '%s' AND user_one_id = '%s') OR (status = '%s' AND user_two_id = '%s') ORDER BY %s %s OFFSET %d LIMIT %d;`
+	getCompetitionsListWithParamQuery = `SELECT * FROM novels_pool WHERE (status LIKE %s AND user_one_id = '%s') OR (status LIKE %s AND user_two_id = '%s') ORDER BY %s %s OFFSET %d LIMIT %d;`
 	getOpponentQuery                  = "SELECT * FROM novels_pool WHERE novel_one_id IN (SELECT id FROM novels WHERE user_id IN (SELECT id FROM users WHERE rate = %d AND NOT id = '%s')) AND status = 'waiting_for_opponent' LIMIT 1;"
 )
 

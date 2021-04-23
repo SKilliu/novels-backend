@@ -10,6 +10,7 @@ import (
 	"github.com/SKilliu/novels-backend/internal/errs"
 	"github.com/SKilliu/novels-backend/internal/server/dto"
 	"github.com/SKilliu/novels-backend/internal/server/middlewares"
+	"github.com/SKilliu/novels-backend/utils"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/robfig/cron/v3"
@@ -117,6 +118,12 @@ func (h *Handler) Create(c echo.Context) error {
 						h.log.WithError(err).Error("failed to update a competition in db")
 						return
 					}
+
+					novel.VotingResult = 51
+					err = h.novelsDB.Update(novel)
+					if err != nil {
+						h.log.WithError(err).Error("failed to update novel in db")
+					}
 				}
 
 				cr.Stop()
@@ -199,6 +206,28 @@ func (h *Handler) Create(c echo.Context) error {
 		if err != nil {
 			h.log.WithError(err).Error("failed to update a competition in db")
 			return
+		}
+
+		// here we need to determine the competition winner
+		resNovelOne, resNovelTwo := utils.GetVotingResults(competition.NovelOneVotes, competition.NovelTwoVotes)
+
+		novel.VotingResult = resNovelOne
+
+		err = h.novelsDB.Update(novel)
+		if err != nil {
+			h.log.WithError(err).Error("failed to update first novel in db")
+		}
+
+		opponentNovel, err := h.novelsDB.GetByID(competition.NovelTwoID)
+		if err != nil {
+			h.log.WithError(err).Error("failed to get opponent novel from db")
+		}
+
+		opponentNovel.VotingResult = resNovelTwo
+
+		err = h.novelsDB.Update(opponentNovel)
+		if err != nil {
+			h.log.WithError(err).Error("failed to update opponent novel in db")
 		}
 
 		cr.Stop()

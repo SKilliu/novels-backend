@@ -96,36 +96,31 @@ var doc = `{
                         "type": "string",
                         "description": "can be \u003cb\u003ewaiting_for_opponent\u003c/b\u003e, \u003cb\u003estarted\u003c/b\u003e, \u003cb\u003eexpired\u003c/b\u003e, \u003cb\u003efinished\u003c/b\u003e or can be skipped",
                         "name": "status",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "name of sorting field",
                         "name": "sort_field",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "asc or desc",
                         "name": "sort_order",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "page number",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "limit of items on page",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -453,36 +448,31 @@ var doc = `{
                         "type": "string",
                         "description": "search by any fields in datagrid",
                         "name": "search",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "name of sorting field",
                         "name": "sort_field",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "asc or desc",
                         "name": "sort_order",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "page number",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "limit of items on page",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -742,6 +732,55 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Edit user info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Edit info",
+                "parameters": [
+                    {
+                        "description": "body for edit info",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EditInfoRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
             }
         }
     },
@@ -838,6 +877,17 @@ var doc = `{
                 "title": {
                     "type": "string",
                     "example": "My new novel"
+                }
+            }
+        },
+        "dto.EditInfoRequest": {
+            "type": "object",
+            "properties": {
+                "avatarData": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "integer"
                 }
             }
         },
@@ -1036,7 +1086,7 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.3",
+	Version:     "0.0.4",
 	Host:        "165.227.207.77:8000",
 	BasePath:    "/",
 	Schemes:     []string{},

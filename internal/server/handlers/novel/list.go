@@ -15,11 +15,11 @@ import (
 // @Security bearerAuth
 // @Tags Novels
 // @Consume application/json
-// @Param search query string true "search by any fields in datagrid"
-// @Param sort_field query string true "name of sorting field"
-// @Param sort_order query string true "asc or desc"
-// @Param page query string true "page number"
-// @Param limit query string true "limit of items on page"
+// @Param search query string false "search by any fields in datagrid"
+// @Param sort_field query string false "name of sorting field"
+// @Param sort_order query string false "asc or desc"
+// @Param page query string false "page number"
+// @Param limit query string false "limit of items on page"
 // @Description Get novels list by search parameter, sorting and pagination
 // @Accept  json
 // @Produce  json
@@ -35,6 +35,23 @@ func (h *Handler) List(c echo.Context) error {
 	sortOrder := c.QueryParam("sort_order")
 	limitParam := c.QueryParam("limit")
 	pageParam := c.QueryParam("page")
+
+	// setup default params if any empty
+	if sortField == "" {
+		sortField = "created_at"
+	}
+
+	if sortOrder == "" {
+		sortOrder = "DESC"
+	}
+
+	if limitParam == "" {
+		limitParam = "1000"
+	}
+
+	if pageParam == "" {
+		pageParam = "1"
+	}
 
 	err := paramValidation(sortField, sortOrder)
 	if err != nil {

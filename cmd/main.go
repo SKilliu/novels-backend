@@ -11,7 +11,7 @@ import (
 const pathToConfigFile = "./envs.yaml"
 
 // @title Novels REST API
-// @version 0.0.3
+// @version 0.0.4
 // @description REST API for Novels app.
 // @description New in version:<br> - added andpoints for competitions
 // @securityDefinitions.apiKey bearerAuth

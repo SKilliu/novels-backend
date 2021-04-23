@@ -29,8 +29,9 @@ CREATE TABLE IF NOT EXISTS novels (
     id                          VARCHAR(36)         PRIMARY KEY,
     user_id                     VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE,
     title                       VARCHAR(255)        NOT NULL,
-    data                        VARCHAR(500)        NOT NULL,
-    participated_in_competiton  BOOLEAN              NOT NULL DEFAULT false,
+    data                        VARCHAR             NOT NULL,
+    participated_in_competiton  BOOLEAN             NOT NULL DEFAULT false,
+    voting_result               INTEGER             NOT NULL DEFAULT 0,
     created_at                  INTEGER             NOT NULL DEFAULT 0,
     updated_at                  INTEGER             NOT NULL DEFAULT 0
 );
@@ -43,8 +44,8 @@ CREATE TABLE IF NOT EXISTS novels_pool (
     user_two_id             VARCHAR(36)         NOT NULL,
     competition_started_at  INTEGER             NOT NULL,
     status                  VARCHAR(50)         NOT NULL,
-    novel_one_votes         INTEGER             NOT NULL,
-    novel_two_votes         INTEGER             NOT NULL,
+    novel_one_votes         FLOAT               NOT NULL,
+    novel_two_votes         FLOAT               NOT NULL,
     created_at              INTEGER             NOT NULL,
     updated_at              INTEGER             NOT NULL        
 );
