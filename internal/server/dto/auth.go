@@ -37,3 +37,8 @@ type SocialsSignInRequest struct {
 	Social   string `json:"social"`
 	DeviceID string `json:"deviceId"`
 }
+
+type EditInfoRequest struct {
+	AvatarData string `json:"avatarData"`
+	Rate       int    `json:"rate"`
+}

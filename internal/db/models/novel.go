@@ -8,6 +8,7 @@ type Novel struct {
 	Title                     string `db:"title"`
 	Data                      string `db:"data"`
 	ParticipatedInCompetition bool   `db:"participated_in_competiton"`
+	VotingResult              int32  `db:"voting_result"`
 	UpdatedAt                 int64  `db:"updated_at"`
 	CreatedAt                 int64  `db:"created_at"`
 }

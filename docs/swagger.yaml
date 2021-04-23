@@ -67,6 +67,13 @@ definitions:
         example: My new novel
         type: string
     type: object
+  dto.EditInfoRequest:
+    properties:
+      avatarData:
+        type: string
+      rate:
+        type: integer
+    type: object
   dto.GuestSignInRequest:
     properties:
       deviceId:
@@ -195,7 +202,7 @@ info:
     REST API for Novels app.
     New in version:<br> - added andpoints for competitions
   title: Novels REST API
-  version: 0.0.3
+  version: 0.0.4
 paths:
   /api/competition/own/get/:
     get:
@@ -238,27 +245,22 @@ paths:
           <b>finished</b> or can be skipped
         in: query
         name: status
-        required: true
         type: string
       - description: name of sorting field
         in: query
         name: sort_field
-        required: true
         type: string
       - description: asc or desc
         in: query
         name: sort_order
-        required: true
         type: string
       - description: page number
         in: query
         name: page
-        required: true
         type: string
       - description: limit of items on page
         in: query
         name: limit
-        required: true
         type: string
       produces:
       - application/json
@@ -467,27 +469,22 @@ paths:
       - description: search by any fields in datagrid
         in: query
         name: search
-        required: true
         type: string
       - description: name of sorting field
         in: query
         name: sort_field
-        required: true
         type: string
       - description: asc or desc
         in: query
         name: sort_order
-        required: true
         type: string
       - description: page number
         in: query
         name: page
-        required: true
         type: string
       - description: limit of items on page
         in: query
         name: limit
-        required: true
         type: string
       produces:
       - application/json
@@ -659,6 +656,37 @@ paths:
       security:
       - bearerAuth: []
       summary: Get user info
+      tags:
+      - Authentication
+    put:
+      consumes:
+      - application/json
+      description: Edit user info
+      parameters:
+      - description: body for edit info
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.EditInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Edit info
       tags:
       - Authentication
 securityDefinitions:
