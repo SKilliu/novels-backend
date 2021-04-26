@@ -1,14 +1,10 @@
 package user
 
 import (
-	"bytes"
 	"database/sql"
-	"fmt"
 	"net/http"
-	"text/template"
 	"time"
 
-	"github.com/SKilliu/novels-backend/email/content"
 	"github.com/SKilliu/novels-backend/internal/db/models"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
@@ -87,6 +83,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 				DeviceID:       "registered",
 				DateOfBirth:    time.Now().Unix(),
 				IsRegistered:   true,
+				IsVerified:     true, // delete it for prod
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to create new user")
@@ -118,26 +115,26 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	t, err := template.New("email").Parse(content.SignUpVerificationEmailContent)
-	if err != nil {
-		h.log.WithError(err).Error("failed to parse template")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-	}
+	// t, err := template.New("email").Parse(content.SignUpVerificationEmailContent)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to parse template")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
 
-	data := struct {
-		URL  string
-		Name string
-	}{
-		URL:  fmt.Sprintf("https://165.227.207.77:8000/api/verify_signup?token=%s", uid),
-		Name: req.Username,
-	}
+	// data := struct {
+	// 	URL  string
+	// 	Name string
+	// }{
+	// 	URL:  fmt.Sprintf("https://165.227.207.77:8000/api/verify_signup?token=%s", uid),
+	// 	Name: req.Username,
+	// }
 
-	var parsedHTML bytes.Buffer
-	err = t.Execute(&parsedHTML, data)
-	if err != nil {
-		h.log.WithError(err).Error("failed to execute template")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-	}
+	// var parsedHTML bytes.Buffer
+	// err = t.Execute(&parsedHTML, data)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to execute template")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
 
 	// go func() {
 	// 	err = utils.SendEmail(h.email, h.password, req.Email, parsedHTML.String(), "Account verification", "text/html")
