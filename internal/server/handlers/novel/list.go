@@ -53,11 +53,11 @@ func (h *Handler) List(c echo.Context) error {
 		pageParam = "1"
 	}
 
-	err := paramValidation(sortField, sortOrder)
-	if err != nil {
-		h.log.WithError(err).Error("not valid params in query")
-		return c.JSON(http.StatusBadRequest, errs.QueryParamIsNotValidErr)
-	}
+	// err := paramValidation(sortField, sortOrder)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("not valid params in query")
+	// 	return c.JSON(http.StatusBadRequest, errs.QueryParamIsNotValidErr)
+	// }
 
 	page, err := strconv.Atoi(pageParam)
 	if err != nil {

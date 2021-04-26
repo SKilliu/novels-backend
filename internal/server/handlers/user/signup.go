@@ -104,6 +104,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 	user.Email = req.Email
 	user.HashedPassword = string(passwordBytes)
 	user.DeviceID = "registered"
+	user.IsVerified = true // delete it for prod
 
 	err = h.usersDB.Update(user)
 	if err != nil {
@@ -138,13 +139,13 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	go func() {
-		err = utils.SendEmail(h.email, h.password, req.Email, parsedHTML.String(), "Account verification", "text/html")
-		if err != nil {
-			h.log.WithError(err).WithField("user_email", req.Email).Error("failed to send confirmation email to user")
-			// return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-		}
-	}()
+	// go func() {
+	// 	err = utils.SendEmail(h.email, h.password, req.Email, parsedHTML.String(), "Account verification", "text/html")
+	// 	if err != nil {
+	// 		h.log.WithError(err).WithField("user_email", req.Email).Error("failed to send confirmation email to user")
+	// 		// return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// 	}
+	// }()
 
 	return c.JSON(http.StatusOK, dto.AuthResponse{
 		ID:       uid,
