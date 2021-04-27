@@ -52,16 +52,16 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.UsernameAlreadyExistsErr)
 	}
 
-	info, err = h.usersDB.CheckUserByEmail(req.Email)
-	if err != nil {
-		h.log.WithError(err).Error("failed to get user from db by email")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-	}
+	// info, err = h.usersDB.CheckUserByEmail(req.Email)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to get user from db by email")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
 
-	if info.Exists {
-		h.log.WithError(err).Error("user with this email already exists")
-		return c.JSON(http.StatusBadRequest, errs.EmailAlreadyExistErr)
-	}
+	// if info.Exists {
+	// 	h.log.WithError(err).Error("user with this email already exists")
+	// 	return c.JSON(http.StatusBadRequest, errs.EmailAlreadyExistErr)
+	// }
 
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(req.Password), 10)
 	if err != nil {
@@ -80,10 +80,10 @@ func (h *Handler) SignUp(c echo.Context) error {
 				Username:       req.Username,
 				HashedPassword: string(passwordBytes),
 				// Email:          req.Email,
-				DeviceID:       "registered",
-				DateOfBirth:    time.Now().Unix(),
-				IsRegistered:   true,
-				IsVerified:     true, // delete it for prod
+				DeviceID:     "registered",
+				DateOfBirth:  time.Now().Unix(),
+				IsRegistered: true,
+				IsVerified:   true, // delete it for prod
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to create new user")
@@ -148,6 +148,6 @@ func (h *Handler) SignUp(c echo.Context) error {
 		ID:       uid,
 		Username: req.Username,
 		// Email:    req.Email,
-		Token:    token,
+		Token: token,
 	})
 }
