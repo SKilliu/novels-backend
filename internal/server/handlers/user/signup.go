@@ -79,7 +79,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 				ID:             uid,
 				Username:       req.Username,
 				HashedPassword: string(passwordBytes),
-				Email:          req.Email,
+				// Email:          req.Email,
 				DeviceID:       "registered",
 				DateOfBirth:    time.Now().Unix(),
 				IsRegistered:   true,
@@ -98,7 +98,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 	}
 
 	user.Username = req.Username
-	user.Email = req.Email
+	// user.Email = req.Email
 	user.HashedPassword = string(passwordBytes)
 	user.DeviceID = "registered"
 	user.IsVerified = true // delete it for prod
@@ -147,7 +147,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.AuthResponse{
 		ID:       uid,
 		Username: req.Username,
-		Email:    req.Email,
+		// Email:    req.Email,
 		Token:    token,
 	})
 }

@@ -49,9 +49,9 @@ func (h *Handler) GetInfo(c echo.Context) error {
 	}
 
 	resp := dto.AuthResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		Email:       user.Email,
+		ID:       user.ID,
+		Username: user.Username,
+		// Email:       user.Email,
 		Token:       token,
 		DateOfBirth: user.DateOfBirth,
 		Gender:      user.Gender,

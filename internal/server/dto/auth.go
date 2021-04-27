@@ -21,9 +21,9 @@ type ResetPasswordRequest struct {
 }
 
 type AuthResponse struct {
-	ID          string `json:"id" example:"some_id"`
-	Username    string `json:"username" example:"awesome_user"`
-	Email       string `json:"email" example:"my@testmail.com"`
+	ID       string `json:"id" example:"some_id"`
+	Username string `json:"username" example:"awesome_user"`
+	// Email       string `json:"email" example:"my@testmail.com"`
 	Token       string `json:"token" example:"someSuperseCretToken.ForuseRAuthoriZATIon"`
 	DateOfBirth int64  `json:"dateOfBirth" example:"12345672"`
 	Gender      string `json:"gender" example:"male"`

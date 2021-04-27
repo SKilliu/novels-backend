@@ -87,9 +87,9 @@ func (h *Handler) RequestResetPassword(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	err = utils.SendEmail(h.email, h.password, user.Email, parsedHTML.String(), "Reset password request", "text/html")
+	err = utils.SendEmail(h.email, h.password, req.Email, parsedHTML.String(), "Reset password request", "text/html")
 	if err != nil {
-		h.log.WithError(err).WithField("user_email", user.Email).Error("failed to send confirmation email to user")
+		h.log.WithError(err).WithField("user_email", req.Email).Error("failed to send confirmation email to user")
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 

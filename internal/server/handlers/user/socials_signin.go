@@ -27,9 +27,9 @@ import (
 // @Router /api/socials-login [post]
 func (h *Handler) SocialsSignIn(c echo.Context) error {
 	var (
-		req      dto.SocialsSignInRequest
-		uid      string
-		email    string
+		req dto.SocialsSignInRequest
+		uid string
+		// email    string
 		username string
 	)
 
@@ -46,20 +46,20 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 			// create an account
 			uid = uuid.New().String()
 			username = fmt.Sprintf("%s-%s", req.Social, utils.GenerateName())
-			email = fmt.Sprintf("%s - no email", username)
+			// email = fmt.Sprintf("%s - no email", username)
 			err = h.usersDB.Insert(models.User{
 				ID:             uid,
 				Username:       username,
 				HashedPassword: "no_pass_social_registration",
-				Email:          email,
-				DateOfBirth:    time.Now().Unix(),
-				Gender:         "none",
-				Membership:     "none",
-				AvatarData:     "none",
-				DeviceID:       "registered",
-				Rate:           0,
-				IsRegistered:   true,
-				IsVerified:     true,
+				// Email:          email,
+				DateOfBirth:  time.Now().Unix(),
+				Gender:       "none",
+				Membership:   "none",
+				AvatarData:   "none",
+				DeviceID:     "registered",
+				Rate:         0,
+				IsRegistered: true,
+				IsVerified:   true,
 			})
 			if err != nil {
 				h.log.WithError(err).Error("failed to insert new user into db")
@@ -98,7 +98,7 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 
 		uid = user.ID
 		username = user.Username
-		email = user.Email
+		// email = user.Email
 	}
 
 	token, err := utils.GenerateJWT(uid, "user", h.authKey)
@@ -108,9 +108,9 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, dto.AuthResponse{
-		ID:          uid,
-		Username:    username,
-		Email:       email,
+		ID:       uid,
+		Username: username,
+		// Email:       email,
 		Token:       token,
 		DateOfBirth: time.Now().Unix(),
 		Gender:      "none",

@@ -2,7 +2,6 @@ package user
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -48,9 +47,9 @@ func (h *Handler) GuestSignIn(c echo.Context) error {
 			randomName := utils.GenerateName()
 
 			err = h.usersDB.Insert(models.User{
-				ID:           uid,
-				Username:     randomName,
-				Email:        fmt.Sprintf("%s has no email", randomName),
+				ID:       uid,
+				Username: randomName,
+				// Email:        fmt.Sprintf("%s has no email", randomName),
 				DeviceID:     req.DeviceID,
 				DateOfBirth:  time.Now().Unix(),
 				IsRegistered: false,
@@ -69,8 +68,8 @@ func (h *Handler) GuestSignIn(c echo.Context) error {
 			resp := dto.AuthResponse{
 				ID:       uid,
 				Username: randomName,
-				Email:    fmt.Sprintf("%s has no email", randomName),
-				Token:    token,
+				// Email:    fmt.Sprintf("%s has no email", randomName),
+				Token: token,
 			}
 
 			return c.JSON(http.StatusOK, resp)
@@ -89,8 +88,8 @@ func (h *Handler) GuestSignIn(c echo.Context) error {
 	resp := dto.AuthResponse{
 		ID:       user.ID,
 		Username: user.Username,
-		Email:    user.Email,
-		Token:    token,
+		// Email:    user.Email,
+		Token: token,
 	}
 
 	return c.JSON(http.StatusOK, resp)

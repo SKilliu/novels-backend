@@ -8,15 +8,15 @@ type User struct {
 	ID             string `db:"id"`
 	Username       string `db:"username"`
 	HashedPassword string `db:"hashed_password"`
-	Email          string `db:"email"`
-	DateOfBirth    int64  `db:"date_of_birth"`
-	Gender         string `db:"gender"`
-	Membership     string `db:"membership"`
-	AvatarData     string `db:"avatar_data"`
-	DeviceID       string `db:"device_id"`
-	Rate           int    `db:"rate"`
-	IsRegistered   bool   `db:"is_registered"`
-	IsVerified     bool   `db:"is_verified"`
+	// Email          string `db:"email"`
+	DateOfBirth  int64  `db:"date_of_birth"`
+	Gender       string `db:"gender"`
+	Membership   string `db:"membership"`
+	AvatarData   string `db:"avatar_data"`
+	DeviceID     string `db:"device_id"`
+	Rate         int    `db:"rate"`
+	IsRegistered bool   `db:"is_registered"`
+	IsVerified   bool   `db:"is_verified"`
 }
 
 type IsExists struct {

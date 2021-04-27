@@ -73,7 +73,7 @@ func (h *Handler) EditInfo(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.AuthResponse{
 		ID:          user.ID,
 		Username:    user.Username,
-		Email:       user.Email,
+		// Email:       user.Email,
 		Token:       token,
 		DateOfBirth: user.DateOfBirth,
 		Gender:      user.Gender,

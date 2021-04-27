@@ -34,14 +34,14 @@ func (h *Handler) SignIn(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad param in body")
 	}
 
-	user, err := h.usersDB.GetByEmail(req.Login)
+	user, err := h.usersDB.GetByUsername(req.Login)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
 			h.log.WithError(err).Error("user doesn't exist")
 			return c.JSON(http.StatusInternalServerError, errs.UserNotFoundErr)
 		default:
-			h.log.WithError(err).Error("failed to get user from db by email")
+			h.log.WithError(err).Error("failed to get user from db by username")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 		}
 	}
@@ -64,9 +64,9 @@ func (h *Handler) SignIn(c echo.Context) error {
 	}
 
 	resp = dto.AuthResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		Email:       user.Email,
+		ID:       user.ID,
+		Username: user.Username,
+		// Email:       user.Email,
 		Token:       token,
 		DateOfBirth: user.DateOfBirth,
 		Gender:      user.Gender,
