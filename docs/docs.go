@@ -809,10 +809,6 @@ var doc = `{
                     "type": "integer",
                     "example": 12345672
                 },
-                "email": {
-                    "type": "string",
-                    "example": "my@testmail.com"
-                },
                 "gender": {
                     "type": "string",
                     "example": "male"
@@ -830,6 +826,7 @@ var doc = `{
                     "example": 0
                 },
                 "token": {
+                    "description": "Email       string ` + "`" + `json:\"email\" example:\"my@testmail.com\"` + "`" + `",
                     "type": "string",
                     "example": "someSuperseCretToken.ForuseRAuthoriZATIon"
                 },
@@ -987,9 +984,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "deviceId": {
-                    "type": "string"
-                },
-                "email": {
+                    "description": "Email    string ` + "`" + `json:\"email\"` + "`" + `",
                     "type": "string"
                 },
                 "password": {

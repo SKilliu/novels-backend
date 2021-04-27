@@ -17,9 +17,6 @@ definitions:
       dateOfBirth:
         example: 12345672
         type: integer
-      email:
-        example: my@testmail.com
-        type: string
       gender:
         example: male
         type: string
@@ -33,6 +30,7 @@ definitions:
         example: 0
         type: integer
       token:
+        description: Email       string `json:"email" example:"my@testmail.com"`
         example: someSuperseCretToken.ForuseRAuthoriZATIon
         type: string
       username:
@@ -142,8 +140,7 @@ definitions:
   dto.SignUpRequest:
     properties:
       deviceId:
-        type: string
-      email:
+        description: Email    string `json:"email"`
         type: string
       password:
         type: string
