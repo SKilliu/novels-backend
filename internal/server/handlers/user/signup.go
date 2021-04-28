@@ -49,7 +49,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 
 	if info.Exists {
 		h.log.WithError(err).Error("username already exists")
-		return c.JSON(http.StatusInternalServerError, errs.UsernameAlreadyExistsErr)
+		return c.JSON(http.StatusInternalServerError, errs.UserAlreadyExistsErr)
 	}
 
 	// info, err = h.usersDB.CheckUserByEmail(req.Email)

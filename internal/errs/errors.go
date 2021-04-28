@@ -20,9 +20,9 @@ var (
 	BadParamInBodyErr          = ErrResp{"BAD_PARAM_IN_BODY", http.StatusBadRequest}
 	NotValidBodyParamErr       = ErrResp{"NOT_VALID_BODY_PARAM", http.StatusBadRequest}
 	EmailAlreadyExistErr       = ErrResp{"EMAIL_ALREADY_EXISTS", http.StatusConflict}
-	UsernameAlreadyExistsErr   = ErrResp{"USER_ALREADY_EXISTS", http.StatusConflict}
+	UserAlreadyExistsErr       = ErrResp{"User already exists", http.StatusConflict}
 	UserNotFoundErr            = ErrResp{"USER_NOT_FOUND", http.StatusBadRequest}
-	WrongCredentialsErr        = ErrResp{"INAVLID_EMAIL_OR_PASS", http.StatusBadRequest}
+	WrongCredentialsErr        = ErrResp{"Invalid password or login", http.StatusBadRequest}
 	NoDataInFormErr            = ErrResp{"NO_DATA_IN_FORM", http.StatusBadRequest}
 	IncorrectAccountTypeErr    = ErrResp{"INCORRECT_ACCOUNT_TYPE", http.StatusForbidden}
 	EmptyQueryParamErr         = ErrResp{"QUERY_PARAM_IS_EMPTY", http.StatusBadRequest}

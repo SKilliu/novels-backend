@@ -39,7 +39,7 @@ func (h *Handler) SignIn(c echo.Context) error {
 		switch err {
 		case sql.ErrNoRows:
 			h.log.WithError(err).Error("user doesn't exist")
-			return c.JSON(http.StatusInternalServerError, errs.UserNotFoundErr)
+			return c.JSON(http.StatusInternalServerError, errs.WrongCredentialsErr)
 		default:
 			h.log.WithError(err).Error("failed to get user from db by username")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
