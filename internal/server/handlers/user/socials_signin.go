@@ -113,9 +113,6 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 		// Email:       email,
 		Token:       token,
 		DateOfBirth: time.Now().Unix(),
-		Gender:      "none",
-		Membership:  "none",
-		AvatarData:  "none",
 		Rate:        0,
 	})
 }
