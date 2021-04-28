@@ -792,7 +792,7 @@ var doc = `{
                     "type": "integer",
                     "example": 500
                 },
-                "message": {
+                "error": {
                     "type": "string",
                     "example": "INTERNAL_SERVER_ERROR"
                 }
