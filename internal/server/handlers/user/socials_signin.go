@@ -121,6 +121,6 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 		Gender:      gender,
 		Membership:  membership,
 		AvatarData:  avatarData,
-		Rate:        0,
+		Rate:        rate,
 	})
 }
