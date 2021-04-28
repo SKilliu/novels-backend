@@ -37,7 +37,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 	err := c.Bind(&req)
 	if err != nil {
 		h.log.WithError(err).Error("failed to parse signup request")
-		return c.JSON(http.StatusBadRequest, "bad param in body")
+		return c.JSON(http.StatusConflict, errs.BadParamInBodyErr)
 	}
 
 	// Here we need to check the user's email and username for already existing in DB
@@ -49,7 +49,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 
 	if info.Exists {
 		h.log.WithError(err).Error("username already exists")
-		return c.JSON(http.StatusInternalServerError, errs.UserAlreadyExistsErr)
+		return c.JSON(http.StatusConflict, errs.UserAlreadyExistsErr)
 	}
 
 	// info, err = h.usersDB.CheckUserByEmail(req.Email)

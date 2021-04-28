@@ -17,7 +17,7 @@ func (e ErrResp) ToError() error {
 var (
 	InternalServerErr          = ErrResp{"INTERNAL_SERVER_ERROR", http.StatusInternalServerError}
 	UnauthorizedErr            = ErrResp{"UNAUTHORIZED", http.StatusUnauthorized}
-	BadParamInBodyErr          = ErrResp{"BAD_PARAM_IN_BODY", http.StatusBadRequest}
+	BadParamInBodyErr          = ErrResp{"BAD_PARAM_IN_BODY", http.StatusConflict}
 	NotValidBodyParamErr       = ErrResp{"NOT_VALID_BODY_PARAM", http.StatusBadRequest}
 	EmailAlreadyExistErr       = ErrResp{"EMAIL_ALREADY_EXISTS", http.StatusConflict}
 	UserAlreadyExistsErr       = ErrResp{"User already exists", http.StatusConflict}

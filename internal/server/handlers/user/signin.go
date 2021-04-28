@@ -39,22 +39,22 @@ func (h *Handler) SignIn(c echo.Context) error {
 		switch err {
 		case sql.ErrNoRows:
 			h.log.WithError(err).Error("user doesn't exist")
-			return c.JSON(http.StatusInternalServerError, errs.WrongCredentialsErr)
+			return c.JSON(http.StatusForbidden, errs.WrongCredentialsErr)
 		default:
 			h.log.WithError(err).Error("failed to get user from db by username")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 		}
 	}
 
-	if !user.IsVerified {
-		h.log.WithError(err).Error("account isn't verified")
-		return c.JSON(http.StatusInternalServerError, errs.NotVerifiedAccountErr)
-	}
+	// if !user.IsVerified {
+	// 	h.log.WithError(err).Error("account isn't verified")
+	// 	return c.JSON(http.StatusInternalServerError, errs.NotVerifiedAccountErr)
+	// }
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(req.Password))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		h.log.WithError(err).Error("incorrect email or password")
-		return c.JSON(http.StatusBadRequest, errs.WrongCredentialsErr)
+		return c.JSON(http.StatusForbidden, errs.WrongCredentialsErr)
 	}
 
 	token, err := utils.GenerateJWT(user.ID, "user", h.authKey)
