@@ -148,6 +148,11 @@ func (h *Handler) SignUp(c echo.Context) error {
 		ID:       uid,
 		Username: req.Username,
 		// Email:    req.Email,
-		Token: token,
+		Token:       token,
+		DateOfBirth: user.DateOfBirth,
+		Gender:      user.Gender,
+		Membership:  user.Membership,
+		AvatarData:  user.AvatarData,
+		Rate:        user.Rate,
 	})
 }

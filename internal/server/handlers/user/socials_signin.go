@@ -30,7 +30,11 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 		req dto.SocialsSignInRequest
 		uid string
 		// email    string
-		username string
+		username   string
+		membership string
+		gender     string
+		avatarData string
+		rate       int
 	)
 
 	err := c.Bind(&req)
@@ -53,9 +57,6 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 				HashedPassword: "no_pass_social_registration",
 				// Email:          email,
 				DateOfBirth:  time.Now().Unix(),
-				Gender:       "none",
-				Membership:   "none",
-				AvatarData:   "none",
 				DeviceID:     "registered",
 				Rate:         0,
 				IsRegistered: true,
@@ -99,6 +100,10 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 		uid = user.ID
 		username = user.Username
 		// email = user.Email
+		membership = user.Membership
+		avatarData = user.AvatarData
+		gender = user.Gender
+		rate = user.Rate
 	}
 
 	token, err := utils.GenerateJWT(uid, "user", h.authKey)
@@ -113,6 +118,9 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 		// Email:       email,
 		Token:       token,
 		DateOfBirth: time.Now().Unix(),
+		Gender:      gender,
+		Membership:  membership,
+		AvatarData:  avatarData,
 		Rate:        0,
 	})
 }
