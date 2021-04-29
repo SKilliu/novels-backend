@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    username            VARCHAR(255)        NOT NULL UNIQUE,
+    username            VARCHAR(255)        NOT NULL,
     id                  VARCHAR(36)         PRIMARY KEY,
     hashed_password     VARCHAR(255)        NOT NULL,
     -- email               VARCHAR(255)        NOT NULL UNIQUE,
