@@ -236,6 +236,54 @@ var doc = `{
                 }
             }
         },
+        "/api/edit-username": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Edit username",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Edit username",
+                "parameters": [
+                    {
+                        "description": "body for edit username",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EditUsernameRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/guest-registration": {
             "post": {
                 "description": "Sign in like a guest (without progress saving)",
@@ -888,6 +936,14 @@ var doc = `{
                 }
             }
         },
+        "dto.EditUsernameRequest": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.GuestSignInRequest": {
             "type": "object",
             "properties": {
@@ -998,13 +1054,13 @@ var doc = `{
         "dto.SocialsSignInRequest": {
             "type": "object",
             "properties": {
-                "deviceId": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "string"
                 },
                 "social": {
+                    "type": "string"
+                },
+                "token": {
                     "type": "string"
                 }
             }
@@ -1081,12 +1137,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.4",
+	Version:     "0.0.5",
 	Host:        "165.227.207.77:8000",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Novels REST API",
-	Description: "REST API for Novels app.\nNew in version:<br> - added andpoints for competitions",
+	Description: "REST API for Novels app.\nNew in version:<br> - added andpoint for editing username",
 }
 
 type s struct{}

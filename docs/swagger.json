@@ -1,10 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "REST API for Novels app.\nNew in version:\u003cbr\u003e - added andpoints for competitions",
+        "description": "REST API for Novels app.\nNew in version:\u003cbr\u003e - added andpoint for editing username",
         "title": "Novels REST API",
         "contact": {},
-        "version": "0.0.4"
+        "version": "0.0.5"
     },
     "host": "165.227.207.77:8000",
     "basePath": "/",
@@ -199,6 +199,54 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dto.VoteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/edit-username": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Edit username",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Edit username",
+                "parameters": [
+                    {
+                        "description": "body for edit username",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EditUsernameRequest"
                         }
                     }
                 ],
@@ -873,6 +921,14 @@
                 }
             }
         },
+        "dto.EditUsernameRequest": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.GuestSignInRequest": {
             "type": "object",
             "properties": {
@@ -983,13 +1039,13 @@
         "dto.SocialsSignInRequest": {
             "type": "object",
             "properties": {
-                "deviceId": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "string"
                 },
                 "social": {
+                    "type": "string"
+                },
+                "token": {
                     "type": "string"
                 }
             }

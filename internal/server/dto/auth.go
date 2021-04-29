@@ -42,3 +42,7 @@ type EditInfoRequest struct {
 	AvatarData string `json:"avatarData"`
 	Rate       int    `json:"rate"`
 }
+
+type EditUsernameRequest struct {
+	Username string `json:"username"`
+}

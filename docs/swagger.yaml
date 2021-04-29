@@ -72,6 +72,11 @@ definitions:
       rate:
         type: integer
     type: object
+  dto.EditUsernameRequest:
+    properties:
+      username:
+        type: string
+    type: object
   dto.GuestSignInRequest:
     properties:
       deviceId:
@@ -149,11 +154,11 @@ definitions:
     type: object
   dto.SocialsSignInRequest:
     properties:
-      deviceId:
-        type: string
       id:
         type: string
       social:
+        type: string
+      token:
         type: string
     type: object
   dto.UpdateNovelRequest:
@@ -197,9 +202,9 @@ info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - added andpoints for competitions
+    New in version:<br> - added andpoint for editing username
   title: Novels REST API
-  version: 0.0.4
+  version: 0.0.5
 paths:
   /api/competition/own/get/:
     get:
@@ -336,6 +341,36 @@ paths:
       summary: Vote for a novel
       tags:
       - Competitions
+  /api/edit-username:
+    post:
+      consumes:
+      - application/json
+      description: Edit username
+      parameters:
+      - description: body for edit username
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.EditUsernameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Edit username
+      tags:
+      - Authentication
   /api/guest-registration:
     post:
       consumes:
