@@ -84,6 +84,18 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 		}
 	} else {
+
+		tokenForCheck, err := utils.GenerateJWT(userSocial.UserID, "user", h.authKey)
+		if err != nil {
+			h.log.WithError(err).Error("failed to create token for checking user")
+			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+		}
+
+		if req.Token != tokenForCheck {
+			h.log.WithError(err).Error("social account already exist for another user")
+			return c.JSON(http.StatusForbidden, "account already exist")
+		}
+
 		// get existed account
 		user, err := h.usersDB.GetByID(userSocial.UserID)
 		if err != nil {

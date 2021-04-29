@@ -33,9 +33,9 @@ type AuthResponse struct {
 }
 
 type SocialsSignInRequest struct {
-	ID       string `json:"id"`
-	Social   string `json:"social"`
-	DeviceID string `json:"deviceId"`
+	ID     string `json:"id"`
+	Social string `json:"social"`
+	Token  string `json:"token"`
 }
 
 type EditInfoRequest struct {
