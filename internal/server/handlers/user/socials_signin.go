@@ -91,9 +91,9 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 		}
 
-		if req.Token != tokenForCheck {
+		if req.Token != tokenForCheck && req.Token != "" {
 			h.log.WithError(err).Error("social account already exist for another user")
-			return c.JSON(http.StatusForbidden, "account already exist")
+			return c.JSON(http.StatusForbidden, errs.UserAlreadyExistsErr)
 		}
 
 		// get existed account
