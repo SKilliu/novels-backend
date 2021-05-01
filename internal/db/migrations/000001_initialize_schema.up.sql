@@ -19,10 +19,10 @@ CREATE TABLE IF NOT EXISTS reset_password_requests (
 );
 
 CREATE TABLE IF NOT EXISTS user_socials (
-    id          VARCHAR         PRIMARY KEY,
+    id          VARCHAR(36)         PRIMARY KEY,
     user_id     VARCHAR(36)         REFERENCES users (id) ON DELETE CASCADE,
     social      VARCHAR(100)        NOT NULL,
-    social_id   VARCHAR(36)         NOT NULL
+    social_id   VARCHAR         NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS novels (
