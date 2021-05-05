@@ -53,6 +53,9 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	e.GET("/api/competition/ready_for_vote", provider.CompetitionHandler.ReadyForVote, m.ParseToken)
 	e.POST("/api/competition/vote", provider.CompetitionHandler.Vote, m.ParseToken)
 
+	// admin handlers
+	e.DELETE("/api/admin/drop_all", provider.AdminHandler.DropAll)
+
 	return e
 }
 

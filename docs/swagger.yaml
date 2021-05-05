@@ -202,10 +202,33 @@ info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - added andpoint for editing username
+    New in version:<br> - added andpoint for deleteing all users from db
   title: Novels REST API
-  version: 0.0.5
+  version: 0.0.6
 paths:
+  /admin/drop_all:
+    delete:
+      consumes:
+      - application/json
+      description: Drop all users from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Drop all users
+      tags:
+      - admin
   /api/competition/own/get/:
     get:
       consumes:

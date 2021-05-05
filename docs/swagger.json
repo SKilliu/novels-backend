@@ -1,14 +1,51 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "REST API for Novels app.\nNew in version:\u003cbr\u003e - added andpoint for editing username",
+        "description": "REST API for Novels app.\nNew in version:\u003cbr\u003e - added andpoint for deleteing all users from db",
         "title": "Novels REST API",
         "contact": {},
-        "version": "0.0.5"
+        "version": "0.0.6"
     },
     "host": "165.227.207.77:8000",
     "basePath": "/",
     "paths": {
+        "/admin/drop_all": {
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Drop all users from the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Drop all users",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/competition/own/get/": {
             "get": {
                 "security": [

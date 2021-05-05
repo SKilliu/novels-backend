@@ -1,53 +1,35 @@
 package admin
 
-// import (
-// 	"net/http"
+import (
+	"net/http"
 
-// 	"github.com/SKilliu/novels-backend/internal/db"
-// 	"github.com/SKilliu/novels-backend/internal/errs"
+	"github.com/SKilliu/novels-backend/internal/errs"
+	"github.com/labstack/echo/v4"
+)
 
-// 	"github.com/SKilliu/novels-backend/internal/server/dto"
+// @Summary Drop all users
+// @Security bearerAuth
+// @Tags admin
+// @Consume application/json
+// @Description Drop all users from the database
+// @Accept  json
+// @Produce  json
+// @Success 200
+// @Failure 400 {object} errs.ErrResp
+// @Failure 500 {object} errs.ErrResp
+// @Router /admin/drop_all [delete]
+func (h *Handler) DropAll(c echo.Context) error {
+	err := h.usersDB.DropAll()
+	if err != nil {
+		h.log.WithError(err).Error("failed to delete all users from db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
 
-// 	"github.com/labstack/echo/v4"
-// )
+	err = h.competitionsDB.DropAll()
+	if err != nil {
+		h.log.WithError(err).Error("failed to drop all competitions from db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
 
-// func (h *Handler) GetUserEvents(c echo.Context) error {
-// 	var resp []dto.GetUserEventsResponse
-
-// 	userid := c.QueryParam("user_id")
-// 	if userid == "" {
-// 		h.log.Error("user_id parameter is empty")
-// 		return c.JSON(http.StatusBadRequest, errs.EmptyQueryParamErr)
-// 	}
-
-// 	tx, err := h.db.Begin()
-// 	if err != nil {
-// 		h.log.WithError(err).Error("failed to create db transaction")
-// 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-// 	}
-// 	defer tx.Rollback()
-
-// 	events, err := db.GetEventsByUserID(tx, userid)
-// 	if err != nil {
-// 		h.log.WithError(err).Error("failed to get user events from db")
-// 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-// 	}
-
-// 	err = tx.Commit()
-// 	if err != nil {
-// 		h.log.WithError(err).Error("failed to commit a transaction")
-// 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-// 	}
-
-// 	for _, e := range events {
-// 		resp = append(resp, dto.GetUserEventsResponse{
-// 			EventID:  e.ID,
-// 			UserID:   e.UserID,
-// 			DeviceID: e.DeviceID,
-// 			Data:     e.Data,
-// 			Time:     e.Time,
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, resp)
-// }
+	return c.NoContent(http.StatusOK)
+}

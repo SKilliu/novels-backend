@@ -11,9 +11,9 @@ import (
 const pathToConfigFile = "./envs.yaml"
 
 // @title Novels REST API
-// @version 0.0.5
+// @version 0.0.6
 // @description REST API for Novels app.
-// @description New in version:<br> - added andpoint for editing username
+// @description New in version:<br> - added andpoint for deleteing all users from db
 // @securityDefinitions.apiKey bearerAuth
 // @in header
 // @name Authorization

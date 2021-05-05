@@ -22,6 +22,7 @@ type CompetitionsQ interface {
 	GetByNovelOneID(nid string) (models.Competition, error)
 	GetByNovelID(nid string) (models.Competition, error)
 	GetListWithParam(param, uid, orderColumn, order string, offset, limit int) ([]models.Competition, error)
+	DropAll() error
 }
 
 // UsersWrapper wraps interface.
@@ -76,4 +77,9 @@ func (c *CompetitionsWrapper) GetByNovelID(nid string) (models.Competition, erro
 	var res models.Competition
 	err := c.parent.db.Select().From(models.CompetitionsTableName).Where(dbx.HashExp{"novel_one_id": nid}).OrWhere(dbx.HashExp{"novel_two_id": nid}).One(&res)
 	return res, err
+}
+
+func (u *CompetitionsWrapper) DropAll() error {
+	_, err := u.parent.db.Delete(models.CompetitionsTableName, dbx.HashExp{}).Execute()
+	return err
 }

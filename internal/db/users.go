@@ -24,6 +24,7 @@ type UsersQ interface {
 	GetByID(uid string) (models.User, error)
 	GetByDeviceID(deviceID string) (models.User, error)
 	GetAllForVote(userOneID, userTwoID string) ([]models.User, error)
+	DropAll() error
 }
 
 // UsersWrapper wraps interface.
@@ -90,4 +91,9 @@ func (u UsersWrapper) GetAllForVote(userOneID, userTwoID string) ([]models.User,
 	var res []models.User
 	err := u.parent.db.Select().From(models.UsersTableName).Where(dbx.NotIn("id", userOneID, userTwoID)).All(&res)
 	return res, err
+}
+
+func (u *UsersWrapper) DropAll() error {
+	_, err := u.parent.db.Delete(models.UsersTableName, dbx.HashExp{}).Execute()
+	return err
 }
