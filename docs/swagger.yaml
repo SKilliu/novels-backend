@@ -202,9 +202,9 @@ info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - added andpoint for deleteing all users from db
+    New in version:<br> - fixed response for the existed guest user sign in
   title: Novels REST API
-  version: 0.0.6
+  version: 0.0.7
 paths:
   /api/admin/drop_all:
     delete:

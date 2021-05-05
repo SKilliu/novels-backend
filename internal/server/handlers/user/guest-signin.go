@@ -89,7 +89,12 @@ func (h *Handler) GuestSignIn(c echo.Context) error {
 		ID:       user.ID,
 		Username: user.Username,
 		// Email:    user.Email,
-		Token: token,
+		Token:       token,
+		DateOfBirth: user.DateOfBirth,
+		Gender:      user.Gender,
+		Membership:  user.Membership,
+		AvatarData:  user.AvatarData,
+		Rate:        user.Rate,
 	}
 
 	return c.JSON(http.StatusOK, resp)
