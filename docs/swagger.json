@@ -9,7 +9,7 @@
     "host": "165.227.207.77:8000",
     "basePath": "/",
     "paths": {
-        "/admin/drop_all": {
+        "/api/admin/drop_all": {
             "delete": {
                 "security": [
                     {

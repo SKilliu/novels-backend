@@ -206,7 +206,7 @@ info:
   title: Novels REST API
   version: 0.0.6
 paths:
-  /admin/drop_all:
+  /api/admin/drop_all:
     delete:
       consumes:
       - application/json

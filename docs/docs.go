@@ -24,7 +24,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/admin/drop_all": {
+        "/api/admin/drop_all": {
             "delete": {
                 "security": [
                     {

@@ -17,7 +17,7 @@ import (
 // @Success 200
 // @Failure 400 {object} errs.ErrResp
 // @Failure 500 {object} errs.ErrResp
-// @Router /admin/drop_all [delete]
+// @Router /api/admin/drop_all [delete]
 func (h *Handler) DropAll(c echo.Context) error {
 	err := h.usersDB.DropAll()
 	if err != nil {
