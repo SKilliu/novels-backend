@@ -202,9 +202,9 @@ info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - fixed response for the existed guest user sign in
+    New in version:<br> - added endpoint /api/reset-user for reseting all progress;<br> - edited usernames for guest and social login.
   title: Novels REST API
-  version: 0.0.7
+  version: 0.0.8
 paths:
   /api/admin/drop_all:
     delete:
@@ -623,6 +623,29 @@ paths:
           schema:
             $ref: '#/definitions/ErrResp'
       summary: Sign up
+      tags:
+      - Authentication
+  /api/reset-user:
+    put:
+      consumes:
+      - application/json
+      description: Reset all user progress and rate
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Reset user
       tags:
       - Authentication
   /api/reset_password_request:

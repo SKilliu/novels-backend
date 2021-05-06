@@ -44,7 +44,11 @@ func (h *Handler) GuestSignIn(c echo.Context) error {
 		case sql.ErrNoRows:
 			uid := uuid.New().String()
 
-			randomName := utils.GenerateName()
+			randomName, err := utils.GenerateName("guest")
+			if err != nil {
+				h.log.WithError(err).Error("failed to generate random name")
+				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+			}
 
 			err = h.usersDB.Insert(models.User{
 				ID:       uid,

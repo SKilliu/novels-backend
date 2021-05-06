@@ -2,7 +2,6 @@ package user
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -49,7 +48,12 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 		case sql.ErrNoRows:
 			// create an account
 			uid = uuid.New().String()
-			username = fmt.Sprintf("%s-%s", req.Social, utils.GenerateName())
+			username, err = utils.GenerateName(req.Social)
+			if err != nil {
+				h.log.WithError(err).Error("failed to generate random name")
+				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+			}
+			
 			// email = fmt.Sprintf("%s - no email", username)
 			err = h.usersDB.Insert(models.User{
 				ID:             uid,

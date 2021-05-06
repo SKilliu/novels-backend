@@ -40,6 +40,7 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 	e.PUT("/api/user-info", provider.UserHandler.EditInfo, m.ParseToken)
 	e.POST("/api/reset_password_request", provider.UserHandler.RequestResetPassword, m.ParseToken)
 	e.POST("/api/edit-username", provider.UserHandler.EditUsername, m.ParseToken)
+	e.PUT("/api/reset-user", provider.UserHandler.Reset, m.ParseToken)
 
 	// novel handlers
 	e.POST("/api/novel/create", provider.NovelHandler.Create, m.ParseToken)

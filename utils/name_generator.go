@@ -2,23 +2,60 @@ package utils
 
 import (
 	"fmt"
-	"math/rand"
+	"io/ioutil"
+	"os"
+	"strconv"
 )
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+const (
+	FacebookSocialKey = "facebook"
+	GoogleSocialKey   = "google_play"
+	AppleSocialKey    = "apple_id"
+)
 
-// func init() {
-// 	rand.Seed(time.Now().UnixNano())
-// }
+func GenerateName(source string) (string, error) {
+	var randomRow string
 
-func GenerateName() string {
-	bytes := make([]rune, 8)
-
-	for i := range bytes {
-		bytes[i] = letterRunes[rand.Intn(len(letterRunes))]
+	content, err := ioutil.ReadFile("./static/counter.txt")
+	if err != nil {
+		return randomRow, err
 	}
 
-	randomRow := fmt.Sprintf("guest-%s", string(bytes))
+	switch source {
+	case FacebookSocialKey:
+		randomRow = fmt.Sprintf("fbUser%s", string(content))
+	case AppleSocialKey:
+		randomRow = fmt.Sprintf("appleUser%s", string(content))
+	case GoogleSocialKey:
+		randomRow = fmt.Sprintf("googleUser%s", string(content))
+	default:
+		randomRow = fmt.Sprintf("guest%s", string(content))
+	}
 
-	return randomRow
+	contentNumber, err := strconv.Atoi(string(content))
+	if err != nil {
+		return randomRow, err
+	}
+
+	contentNumber++
+
+	newContent := strconv.Itoa(contentNumber)
+
+	destFile, err := os.OpenFile("./static/counter.txt", os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		return randomRow, err
+	}
+	defer destFile.Close()
+
+	err = destFile.Truncate(0)
+	if err != nil {
+		return randomRow, err
+	}
+
+	_, err = destFile.Write([]byte(newContent))
+	if err != nil {
+		return randomRow, err
+	}
+
+	return randomRow, err
 }

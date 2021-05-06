@@ -682,6 +682,43 @@ var doc = `{
                 }
             }
         },
+        "/api/reset-user": {
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Reset all user progress and rate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Reset user",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/reset_password_request": {
             "post": {
                 "security": [
@@ -1174,12 +1211,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.7",
+	Version:     "0.0.8",
 	Host:        "165.227.207.77:8000",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Novels REST API",
-	Description: "REST API for Novels app.\nNew in version:<br> - fixed response for the existed guest user sign in",
+	Description: "REST API for Novels app.\nNew in version:<br> - added endpoint /api/reset-user for reseting all progress;<br> - edited usernames for guest and social login.",
 }
 
 type s struct{}
