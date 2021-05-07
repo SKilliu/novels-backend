@@ -77,6 +77,11 @@ definitions:
       username:
         type: string
     type: object
+  dto.GetVersionResponse:
+    properties:
+      version:
+        type: string
+    type: object
   dto.GuestSignInRequest:
     properties:
       deviceId:
@@ -173,6 +178,13 @@ definitions:
         example: My new novel
         type: string
     type: object
+  dto.UpdateVersionRequest:
+    properties:
+      platform:
+        type: string
+      version:
+        type: string
+    type: object
   dto.UserData:
     properties:
       dateOfBith:
@@ -202,9 +214,9 @@ info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - added endpoint /api/reset-user for reseting all progress;<br> - edited usernames for guest and social login.
+    New in version:<br> - added endpoints for updating and getting client version info for Andriod and iOS.
   title: Novels REST API
-  version: 0.0.8
+  version: 0.0.9
 paths:
   /api/admin/drop_all:
     delete:
@@ -227,6 +239,66 @@ paths:
       security:
       - bearerAuth: []
       summary: Drop all users
+      tags:
+      - admin
+  /api/admin/version:
+    get:
+      consumes:
+      - application/json
+      description: Returns a client version for Andrion or iOS by platform name.
+      parameters:
+      - description: requested platform
+        in: query
+        name: platform
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetVersionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Get client version
+      tags:
+      - admin
+    post:
+      consumes:
+      - application/json
+      description: Update client version info for requested platform
+      parameters:
+      - description: body for a new version saving
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateVersionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Update client version
       tags:
       - admin
   /api/competition/own/get/:

@@ -61,6 +61,101 @@ var doc = `{
                 }
             }
         },
+        "/api/admin/version": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Returns a client version for Andrion or iOS by platform name.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Get client version",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "requested platform",
+                        "name": "platform",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetVersionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Update client version info for requested platform",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Update client version",
+                "parameters": [
+                    {
+                        "description": "body for a new version saving",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateVersionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/competition/own/get/": {
             "get": {
                 "security": [
@@ -1018,6 +1113,14 @@ var doc = `{
                 }
             }
         },
+        "dto.GetVersionResponse": {
+            "type": "object",
+            "properties": {
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.GuestSignInRequest": {
             "type": "object",
             "properties": {
@@ -1156,6 +1259,17 @@ var doc = `{
                 }
             }
         },
+        "dto.UpdateVersionRequest": {
+            "type": "object",
+            "properties": {
+                "platform": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.UserData": {
             "type": "object",
             "properties": {
@@ -1211,12 +1325,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.8",
+	Version:     "0.0.9",
 	Host:        "165.227.207.77:8000",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Novels REST API",
-	Description: "REST API for Novels app.\nNew in version:<br> - added endpoint /api/reset-user for reseting all progress;<br> - edited usernames for guest and social login.",
+	Description: "REST API for Novels app.\nNew in version:<br> - added endpoints for updating and getting client version info for Andriod and iOS.",
 }
 
 type s struct{}

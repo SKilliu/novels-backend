@@ -56,6 +56,8 @@ func NewRouter(logger *logrus.Entry) *echo.Echo {
 
 	// admin handlers
 	e.DELETE("/api/admin/drop_all", provider.AdminHandler.DropAll)
+	e.POST("/api/admin/version", provider.AdminHandler.UpdateVersion)
+	e.GET("/api/admin/version", provider.AdminHandler.GetVersion)
 
 	return e
 }

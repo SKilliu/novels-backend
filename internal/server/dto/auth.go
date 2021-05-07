@@ -46,3 +46,12 @@ type EditInfoRequest struct {
 type EditUsernameRequest struct {
 	Username string `json:"username"`
 }
+
+type UpdateVersionRequest struct {
+	Platform string `json:"platform"`
+	Version  string `json:"version"`
+}
+
+type GetVersionResponse struct {
+	Version string `json:"version"`
+}
