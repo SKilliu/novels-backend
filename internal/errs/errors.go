@@ -34,4 +34,5 @@ var (
 	CompetitionIsNotActiveErr  = ErrResp{"COMPETITION_IS_NOT_ACTIVE", http.StatusConflict}
 	IncorrectUserForVotingErr  = ErrResp{"INCORRECT_USER_FOR_VOTING", http.StatusConflict}
 	UserAlreadyVotedErr        = ErrResp{"USER_ALREADY_VOTED", http.StatusConflict}
+	UserWithTokenNotFoundErr   = ErrResp{"USER_WITH_TOKEN_NOT_FOUND", http.StatusNotFound}
 )

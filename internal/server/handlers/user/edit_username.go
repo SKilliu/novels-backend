@@ -31,6 +31,18 @@ func (h *Handler) EditUsername(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
+	// Here we need to check the user's email and username for already existing in DB
+	info, err := h.usersDB.CheckUserByUsername(req.Username)
+	if err != nil {
+		h.log.WithError(err).Error("failed to get user from db by username")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	if info.Exists {
+		h.log.WithError(err).Error("username already exists")
+		return c.JSON(http.StatusConflict, errs.UserAlreadyExistsErr)
+	}
+
 	err = c.Bind(&req)
 	if err != nil {
 		h.log.WithError(err).Error("failed to parse signup request")

@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/SKilliu/novels-backend/internal/db/models"
+	"github.com/SKilliu/novels-backend/internal/errs"
+	"github.com/SKilliu/novels-backend/utils"
 
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )
@@ -24,6 +26,7 @@ type UsersQ interface {
 	GetByID(uid string) (models.User, error)
 	GetByDeviceID(deviceID string) (models.User, error)
 	GetAllForVote(userOneID, userTwoID string) ([]models.User, error)
+	GetByToken(token, key string) (models.User, error)
 	DropAll() error
 }
 
@@ -96,4 +99,30 @@ func (u UsersWrapper) GetAllForVote(userOneID, userTwoID string) ([]models.User,
 func (u *UsersWrapper) DropAll() error {
 	_, err := u.parent.db.Delete(models.UsersTableName, dbx.HashExp{}).Execute()
 	return err
+}
+
+func (u *UsersWrapper) GetByToken(token, key string) (models.User, error) {
+	var (
+		res models.User
+		all []models.User
+	)
+
+	err := u.parent.db.Select().From(models.UsersTableName).All(&all)
+	if err != nil {
+		return res, err
+	}
+
+	for _, u := range all {
+		userToken, err := utils.GenerateJWT(u.ID, "user", key)
+		if err != nil {
+			return res, err
+		}
+
+		if userToken == token {
+			res = u
+			return res, err
+		}
+	}
+
+	return res, errs.UserWithTokenNotFoundErr.ToError()
 }

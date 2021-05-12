@@ -26,7 +26,7 @@ func main() {
 	utils.UploadEnvironmentVariables(pathToConfigFile)
 
 	db.Init(logger)
-	//s3.Init(logger)
+
 	server.Init(logger)
 
 	err := server.Start()

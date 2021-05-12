@@ -66,7 +66,44 @@ func getFromJWT(r *http.Request, auth string, fieldType string) (string, string,
 
 	fieldValue, ok := fieldRaw.(string)
 	if !ok {
-		return "", "", errors.New("failed to cast shopper_id into string")
+		return "", "", errors.New("failed to cast user_id into string")
+	}
+
+	return fieldValue, token.Raw, nil
+}
+
+func GetFromString(row string, auth string, fieldType string) (string, string, error) {
+	var tokenRaw string
+	// bearer := r.Header.Get("Authorization")
+	if len(row) > 7 && strings.ToUpper(row[0:6]) == "BEARER" {
+		tokenRaw = row[7:]
+	}
+
+	token, err := jwt.Parse(tokenRaw, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
+		return []byte(auth), nil
+	})
+	if err != nil {
+		return "", "", err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", "", errors.New("cannot cast token.Claims to jwt.MapClaims")
+	}
+
+	var fieldRaw interface{}
+
+	fieldRaw, ok = claims[fieldType]
+	if !ok {
+		return "", "", errors.New("user info is absent in the jwt")
+	}
+
+	fieldValue, ok := fieldRaw.(string)
+	if !ok {
+		return "", "", errors.New("failed to cast user_id into string")
 	}
 
 	return fieldValue, token.Raw, nil
