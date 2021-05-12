@@ -97,14 +97,7 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 					return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 				}
 			} else {
-				username, err = utils.GenerateName(req.Social)
-				if err != nil {
-					h.log.WithError(err).Error("failed to generate random name")
-					return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-				}
-
 				user.DeviceID = "registered"
-				user.Username = username
 				uid = user.ID
 				username = user.Username
 				membership = user.Membership
