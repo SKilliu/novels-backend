@@ -52,7 +52,7 @@ func (h *Handler) GetVersion(c echo.Context) error {
 	}
 
 	switch platform {
-	case "andriod":
+	case "android":
 		resp.Version = versions["android"]
 	case "ios":
 		resp.Version = versions["ios"]
