@@ -55,7 +55,7 @@ func (h *Handler) UpdateVersion(c echo.Context) error {
 	}
 
 	if req.Platform == "android" {
-		versions["andriod"] = req.Version
+		versions["android"] = req.Version
 	}
 
 	if req.Platform == "ios" {
