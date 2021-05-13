@@ -52,70 +52,39 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 			// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 			// }
 
-			if req.Token != "" {
-				user, err := h.usersDB.GetByToken(req.Token, h.authKey)
-				if err != nil {
-					switch err {
-					case errs.UserWithTokenNotFoundErr.ToError():
-						// create an account
-						uid = uuid.New().String()
-						username, err = utils.GenerateName(req.Social)
-						if err != nil {
-							h.log.WithError(err).Error("failed to generate random name")
-							return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-						}
-
-						// email = fmt.Sprintf("%s - no email", username)
-						err = h.usersDB.Insert(models.User{
-							ID:             uid,
-							Username:       username,
-							HashedPassword: "no_pass_social_registration",
-							// Email:          email,
-							DateOfBirth:  time.Now().Unix(),
-							DeviceID:     "registered",
-							Rate:         0,
-							IsRegistered: true,
-							IsVerified:   true,
-						})
-						if err != nil {
-							h.log.WithError(err).Error("failed to insert new user into db")
-							return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-						}
-
-						// create user socials
-						err = h.userSocialsDB.Insert(models.UserSocial{
-							ID:       uuid.New().String(),
-							UserID:   uid,
-							Social:   req.Social,
-							SocialID: req.ID,
-						})
-						if err != nil {
-							h.log.WithError(err).Error("failed to insert user social into db")
-							return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-						}
-					default:
-						h.log.WithError(err).Error("failed to get user from db")
+			user, err := h.usersDB.GetByToken(req.Token, h.authKey)
+			if err != nil {
+				switch err.Error() {
+				case errs.UserWithTokenNotFoundErr.ToError().Error():
+					// create an account
+					uid = uuid.New().String()
+					username, err = utils.GenerateName(req.Social)
+					if err != nil {
+						h.log.WithError(err).Error("failed to generate random name")
 						return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 					}
-				} else {
-					user.DeviceID = "registered"
-					uid = user.ID
-					username = user.Username
-					membership = user.Membership
-					gender = user.Gender
-					avatarData = user.AvatarData
-					rate = user.Rate
 
-					err = h.usersDB.Update(user)
+					// email = fmt.Sprintf("%s - no email", username)
+					err = h.usersDB.Insert(models.User{
+						ID:             uid,
+						Username:       username,
+						HashedPassword: "no_pass_social_registration",
+						// Email:          email,
+						DateOfBirth:  time.Now().Unix(),
+						DeviceID:     "registered",
+						Rate:         0,
+						IsRegistered: true,
+						IsVerified:   true,
+					})
 					if err != nil {
-						h.log.WithError(err).Error("failed to update user in db")
+						h.log.WithError(err).Error("failed to insert new user into db")
 						return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 					}
 
 					// create user socials
 					err = h.userSocialsDB.Insert(models.UserSocial{
 						ID:       uuid.New().String(),
-						UserID:   user.ID,
+						UserID:   uid,
 						Social:   req.Social,
 						SocialID: req.ID,
 					})
@@ -123,6 +92,35 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 						h.log.WithError(err).Error("failed to insert user social into db")
 						return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 					}
+				default:
+					h.log.WithError(err).Error("failed to get user from db")
+					return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+				}
+			} else {
+				user.DeviceID = "registered"
+				uid = user.ID
+				username = user.Username
+				membership = user.Membership
+				gender = user.Gender
+				avatarData = user.AvatarData
+				rate = user.Rate
+
+				err = h.usersDB.Update(user)
+				if err != nil {
+					h.log.WithError(err).Error("failed to update user in db")
+					return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+				}
+
+				// create user socials
+				err = h.userSocialsDB.Insert(models.UserSocial{
+					ID:       uuid.New().String(),
+					UserID:   user.ID,
+					Social:   req.Social,
+					SocialID: req.ID,
+				})
+				if err != nil {
+					h.log.WithError(err).Error("failed to insert user social into db")
+					return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 				}
 			}
 
