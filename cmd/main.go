@@ -3,17 +3,16 @@ package main
 import (
 	"github.com/SKilliu/novels-backend/internal/db"
 	"github.com/SKilliu/novels-backend/internal/server"
-	"github.com/SKilliu/novels-backend/utils"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
-const pathToConfigFile = "./envs.yaml"
+// const pathToConfigFile = "./envs.yaml"
 
 // @title Novels REST API
-// @version 0.0.9
+// @version 1.0.1
 // @description REST API for Novels app.
-// @description New in version:<br> - added endpoints for updating and getting client version info for Andriod and iOS.
+// @description New in version:<br> - fixed bug with voting.
 // @securityDefinitions.apiKey bearerAuth
 // @in header
 // @name Authorization
@@ -23,7 +22,7 @@ func main() {
 	log := logrus.New()
 	logger := logrus.NewEntry(log)
 
-	utils.UploadEnvironmentVariables(pathToConfigFile)
+	// utils.UploadEnvironmentVariables(pathToConfigFile)
 
 	db.Init(logger)
 

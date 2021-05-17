@@ -95,7 +95,7 @@ func (h *Handler) Create(c echo.Context) error {
 			cr.Start()
 
 			now := time.Now().UTC()
-			now = now.Add(time.Minute * 2).UTC()
+			now = now.Add(time.Minute * 120).UTC()
 			_, err = cr.AddFunc(fmt.Sprintf("%d %d %d %d *", now.Minute(), now.Hour(), now.Day(), now.Month()), func() {
 
 				competition, err := h.competitionsDB.GetByNovelOneID(novel.ID)
@@ -123,6 +123,13 @@ func (h *Handler) Create(c echo.Context) error {
 					err = h.novelsDB.Update(novel)
 					if err != nil {
 						h.log.WithError(err).Error("failed to update novel in db")
+						return
+					}
+
+					err = h.readyForVoteDB.DeleteByNovelID(novel.ID)
+					if err != nil {
+						h.log.WithError(err).Error("failed to delete novel for vote from db")
+						return
 					}
 				}
 
@@ -185,7 +192,7 @@ func (h *Handler) Create(c echo.Context) error {
 	cr := cron.New(cron.WithLocation(time.UTC))
 	cr.Start()
 
-	now := competitionStart.Add(time.Minute * 5).UTC()
+	now := competitionStart.Add(time.Minute * 120).UTC()
 	_, err = cr.AddFunc(fmt.Sprintf("%d %d %d %d *", now.Minute(), now.Hour(), now.Day(), now.Month()), func() {
 
 		competition, err := h.competitionsDB.GetByNovelOneID(novel.ID)
@@ -205,6 +212,12 @@ func (h *Handler) Create(c echo.Context) error {
 		err = h.competitionsDB.Update(competition)
 		if err != nil {
 			h.log.WithError(err).Error("failed to update a competition in db")
+			return
+		}
+
+		err = h.readyForVoteDB.DeleteByNovelID(novel.ID)
+		if err != nil {
+			h.log.WithError(err).Error("failed to delete novel for vote from db")
 			return
 		}
 

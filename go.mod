@@ -3,6 +3,7 @@ module github.com/SKilliu/novels-backend
 go 1.15
 
 require (
+	github.com/abh/geoip v0.0.0-20160510155516-07cea4480daa // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/bugsnag/bugsnag-go v2.1.0+incompatible
 	github.com/bugsnag/panicwrap v1.3.2 // indirect
@@ -23,6 +24,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/minio/minio-go/v7 v7.0.10
+	github.com/oschwald/geoip2-golang v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sendgrid/rest v2.6.3+incompatible // indirect

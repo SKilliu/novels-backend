@@ -34,6 +34,28 @@ func (h *Handler) Vote(c echo.Context) error {
 	// !!!!!! Maybe if we have empty req.NovelID - it means that user skiped competition
 	// Need to discuss it
 
+	if req.NovelID == "" {
+		readyForVote, err := h.readyForVoteDB.GetForVote()
+		if err != nil {
+			switch err {
+			case sql.ErrNoRows:
+				return c.JSON(http.StatusOK, nil)
+			default:
+				h.log.WithError(err).Error("failed to get ready for vote from db")
+				return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+			}
+		}
+
+		readyForVote.ViewsAmount++
+		err = h.readyForVoteDB.Update(readyForVote)
+		if err != nil {
+			h.log.WithError(err).Error("failed to update ready for vote entity in db")
+			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+		}
+
+		return c.JSON(http.StatusAccepted, "competition has skipped")
+	}
+
 	userID, _, err := middlewares.GetUserIDFromJWT(c.Request(), h.authKey)
 	if err != nil {
 		h.log.WithError(err).Error("failed to get user ID from token")

@@ -1,18 +1,41 @@
 version: "2.1"
 
-services:
-  # server-s3:
-  #   container_name: server-s3
-  #   image: minio/minio
-  #   ports:
-  #     - 9000:9000
-  #   environment:
-  #     - MINIO_ACCESS_KEY=123123123
-  #     - MINIO_SECRET_KEY=123123123
-  #   command: server /home/shared
+networks:
+  novels:
 
-  server-db:
-    container_name: server-db
+services:
+  novels-backend:
+    container_name: novels-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - server_host=0.0.0.0
+      - server_port=8000
+      - server_ssl=true
+      - server_cert_path=./ssl/server.crt
+      - server_cert_key=./ssl/server.key
+      - authentication_secret=wehhbsdyvdsyfvyyGYFYTFDGSHUJSIffkhsdbcjhdsbchsaca
+      - db_name=server-db
+      - db_host=novels-db
+      - db_port=5432
+      - db_user=postgres
+      - db_password=1234567
+      - db_ssl=disable
+      - email_address=skiliushyk@gmail.com
+      - email_password=H@milton44
+    ports:
+      - 8000:8000
+    command: bash -c "./novels-backend run"
+    depends_on:
+      novels-db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - novels
+
+  novels-db:
+    container_name: novels-db
     image: postgres:10
     ports:
       - 5430:5432
@@ -28,3 +51,6 @@ services:
       retries: 5
     volumes:
       - ./data/server-db:/var/lib/postgresql/data
+    restart: always  
+    networks:
+      - novels

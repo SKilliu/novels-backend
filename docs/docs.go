@@ -1325,12 +1325,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.9",
+	Version:     "1.0.1",
 	Host:        "165.227.207.77:8000",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Novels REST API",
-	Description: "REST API for Novels app.\nNew in version:<br> - added endpoints for updating and getting client version info for Andriod and iOS.",
+	Description: "REST API for Novels app.\nNew in version:<br> - fixed bug with voting.",
 }
 
 type s struct{}

@@ -214,9 +214,9 @@ info:
   contact: {}
   description: |-
     REST API for Novels app.
-    New in version:<br> - added endpoints for updating and getting client version info for Andriod and iOS.
+    New in version:<br> - fixed bug with voting.
   title: Novels REST API
-  version: 0.0.9
+  version: 1.0.1
 paths:
   /api/admin/drop_all:
     delete:
