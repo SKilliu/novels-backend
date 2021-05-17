@@ -9,7 +9,7 @@ import (
 type ReadyForVoteQ interface {
 	Insert(rfv models.ReadyForVote) error
 	Update(rfv models.ReadyForVote) error
-	DeleteByNovelID(novelID string) error
+	Delete(rfv models.ReadyForVote) error
 	GetByUserAndCompetitionIDs(uid, cid string) (models.ReadyForVote, error)
 	GetForVote() (models.ReadyForVote, error)
 }
@@ -46,7 +46,6 @@ func (c *ReadyForVoteWrapper) GetForVote() (models.ReadyForVote, error) {
 	return res, err
 }
 
-func (c *ReadyForVoteWrapper) DeleteByNovelID(novelID string) error {
-	_, err := c.parent.db.Delete(models.ReadyForVoteTableName, dbx.HashExp{"novel_id": novelID}).Execute()
-	return err
+func (r *ReadyForVoteWrapper) Delete(rfv models.ReadyForVote) error {
+	return r.parent.db.Model(&rfv).Delete()
 }

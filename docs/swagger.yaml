@@ -209,7 +209,7 @@ definitions:
         example: some-NovEL_ID
         type: string
     type: object
-host: 165.227.207.77:8000
+host: localhost:8000
 info:
   contact: {}
   description: |-
