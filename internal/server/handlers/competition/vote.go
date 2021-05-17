@@ -128,5 +128,11 @@ func (h *Handler) Vote(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
+	err = h.readyForVoteDB.DeleteByNovelID(req.NovelID)
+	if err != nil {
+		h.log.WithError(err).Error("failed to delete ready for vote entity")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
 	return c.JSON(http.StatusAccepted, "vote has accepted")
 }

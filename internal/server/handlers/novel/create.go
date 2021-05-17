@@ -125,12 +125,6 @@ func (h *Handler) Create(c echo.Context) error {
 						h.log.WithError(err).Error("failed to update novel in db")
 						return
 					}
-
-					err = h.readyForVoteDB.DeleteByNovelID(novel.ID)
-					if err != nil {
-						h.log.WithError(err).Error("failed to delete novel for vote from db")
-						return
-					}
 				}
 
 				cr.Stop()
@@ -212,12 +206,6 @@ func (h *Handler) Create(c echo.Context) error {
 		err = h.competitionsDB.Update(competition)
 		if err != nil {
 			h.log.WithError(err).Error("failed to update a competition in db")
-			return
-		}
-
-		err = h.readyForVoteDB.DeleteByNovelID(novel.ID)
-		if err != nil {
-			h.log.WithError(err).Error("failed to delete novel for vote from db")
 			return
 		}
 

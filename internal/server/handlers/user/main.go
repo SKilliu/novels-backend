@@ -10,6 +10,8 @@ type Handler struct {
 	usersDB              db.UsersQ
 	changePassRequestsDB db.ResetPassRequestsQ
 	userSocialsDB        db.UserSocialsQ
+	competitionsDB       db.CompetitionsQ
+	readyForVoteDB       db.ReadyForVoteQ
 	authKey              string
 	email                string
 	password             string
@@ -21,6 +23,8 @@ func New(logger *logrus.Entry, authKey, email, password string) *Handler {
 		usersDB:              db.Connection().UsersQ(),
 		changePassRequestsDB: db.Connection().ResetPassRequestsQ(),
 		userSocialsDB:        db.Connection().UserSocialsQ(),
+		competitionsDB:       db.Connection().CompetitionsQ(),
+		readyForVoteDB:       db.Connection().ReadyForVoteQ(),
 		authKey:              authKey,
 		email:                email,
 		password:             password,

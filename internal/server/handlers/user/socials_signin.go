@@ -92,6 +92,30 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 						h.log.WithError(err).Error("failed to insert user social into db")
 						return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 					}
+
+					// here we fill up ready for vote list for a new user
+					competitions, err := h.competitionsDB.GetAllStarted()
+					if err != nil {
+						h.log.WithError(err).Error("failed to get all started competitions for a new user")
+						return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+					}
+
+					if len(competitions) > 0 {
+						for _, co := range competitions {
+							err = h.readyForVoteDB.Insert(models.ReadyForVote{
+								ID:           uuid.New().String(),
+								UserID:       uid,
+								NovelsPoolID: co.ID,
+								ViewsAmount:  0,
+								IsVoted:      false,
+							})
+							if err != nil {
+								h.log.WithError(err).Error("failed to insert a new ready for vote entity")
+								return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+							}
+						}
+					}
+
 				default:
 					h.log.WithError(err).Error("failed to get user from db")
 					return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)

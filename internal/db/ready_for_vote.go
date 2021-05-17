@@ -42,7 +42,7 @@ func (r *ReadyForVoteWrapper) GetByUserAndCompetitionIDs(uid, cid string) (model
 
 func (c *ReadyForVoteWrapper) GetForVote() (models.ReadyForVote, error) {
 	var res models.ReadyForVote
-	err := c.parent.db.Select().From(models.ReadyForVoteTableName).OrderBy("views_amount ASC").Limit(1).One(&res)
+	err := c.parent.db.Select().From(models.ReadyForVoteTableName).Where(dbx.HashExp{"is_voted": false}).OrderBy("views_amount ASC").Limit(1).One(&res)
 	return res, err
 }
 

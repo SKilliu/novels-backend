@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/SKilliu/novels-backend/internal/db/models"
+	"github.com/SKilliu/novels-backend/internal/server/dto"
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )
 
@@ -22,6 +23,7 @@ type CompetitionsQ interface {
 	GetByNovelOneID(nid string) (models.Competition, error)
 	GetByNovelID(nid string) (models.Competition, error)
 	GetListWithParam(param, uid, orderColumn, order string, offset, limit int) ([]models.Competition, error)
+	GetAllStarted() ([]models.Competition, error)
 	DropAll() error
 }
 
@@ -82,4 +84,10 @@ func (c *CompetitionsWrapper) GetByNovelID(nid string) (models.Competition, erro
 func (u *CompetitionsWrapper) DropAll() error {
 	_, err := u.parent.db.Delete(models.CompetitionsTableName, dbx.HashExp{}).Execute()
 	return err
+}
+
+func (u *CompetitionsWrapper) GetAllStarted() ([]models.Competition, error) {
+	var res []models.Competition
+	err := u.parent.db.Select().From(models.CompetitionsTableName).Where(dbx.HashExp{"status": dto.StatusStarted}).All(&res)
+	return res, err
 }
