@@ -25,7 +25,13 @@ import (
 func (h *Handler) Vote(c echo.Context) error {
 	var req dto.VoteRequest
 
-	err := c.Bind(&req)
+	userID, _, err := middlewares.GetUserIDFromJWT(c.Request(), h.authKey)
+	if err != nil {
+		h.log.WithError(err).Error("failed to get user ID from token")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	err = c.Bind(&req)
 	if err != nil {
 		h.log.WithError(err).Error("failed to parse vote request")
 		return c.JSON(http.StatusBadRequest, errs.BadParamInBodyErr)
@@ -35,7 +41,7 @@ func (h *Handler) Vote(c echo.Context) error {
 	// Need to discuss it
 
 	if req.NovelID == "" {
-		readyForVote, err := h.readyForVoteDB.GetForVote()
+		readyForVote, err := h.readyForVoteDB.GetForVote(userID)
 		if err != nil {
 			switch err {
 			case sql.ErrNoRows:
@@ -54,12 +60,6 @@ func (h *Handler) Vote(c echo.Context) error {
 		}
 
 		return c.JSON(http.StatusAccepted, "competition has skipped")
-	}
-
-	userID, _, err := middlewares.GetUserIDFromJWT(c.Request(), h.authKey)
-	if err != nil {
-		h.log.WithError(err).Error("failed to get user ID from token")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
 	_, err = h.novelsDB.GetByID(req.NovelID)

@@ -11,7 +11,7 @@ type ReadyForVoteQ interface {
 	Update(rfv models.ReadyForVote) error
 	Delete(rfv models.ReadyForVote) error
 	GetByUserAndCompetitionIDs(uid, cid string) (models.ReadyForVote, error)
-	GetForVote() (models.ReadyForVote, error)
+	GetForVote(userid string) (models.ReadyForVote, error)
 }
 
 // UsersWrapper wraps interface.
@@ -40,9 +40,9 @@ func (r *ReadyForVoteWrapper) GetByUserAndCompetitionIDs(uid, cid string) (model
 	return res, err
 }
 
-func (c *ReadyForVoteWrapper) GetForVote() (models.ReadyForVote, error) {
+func (c *ReadyForVoteWrapper) GetForVote(userid string) (models.ReadyForVote, error) {
 	var res models.ReadyForVote
-	err := c.parent.db.Select().From(models.ReadyForVoteTableName).Where(dbx.HashExp{"is_voted": false}).OrderBy("views_amount ASC").Limit(1).One(&res)
+	err := c.parent.db.Select().From(models.ReadyForVoteTableName).Where(dbx.HashExp{"is_voted": false, "user_id": userid}).OrderBy("views_amount ASC").Limit(1).One(&res)
 	return res, err
 }
 

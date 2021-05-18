@@ -6,6 +6,7 @@ import (
 
 	"github.com/SKilliu/novels-backend/internal/errs"
 	"github.com/SKilliu/novels-backend/internal/server/dto"
+	"github.com/SKilliu/novels-backend/internal/server/middlewares"
 	"github.com/labstack/echo/v4"
 )
 
@@ -21,8 +22,13 @@ import (
 // @Failure 500 {object} errs.ErrResp
 // @Router /api/competition/ready_for_vote [get]
 func (h *Handler) ReadyForVote(c echo.Context) error {
+	userID, _, err := middlewares.GetUserIDFromJWT(c.Request(), h.authKey)
+	if err != nil {
+		h.log.WithError(err).Error("failed to get user ID from token")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
 
-	readyForVote, err := h.readyForVoteDB.GetForVote()
+	readyForVote, err := h.readyForVoteDB.GetForVote(userID)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
