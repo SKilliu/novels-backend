@@ -14,6 +14,7 @@ type Competition struct {
 	NovelTwoVotes        float32 `db:"novel_two_votes"`
 	CreatedAt            int64   `db:"created_at" example:"121342424"`
 	UpdatedAt            int64   `db:"updated_at" example:"1654726235"`
+	ViewsAmount          int64   `db:"views_amount"`
 }
 
 type CompetitionOpponent struct {

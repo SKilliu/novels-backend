@@ -52,7 +52,8 @@ func (h *Handler) Vote(c echo.Context) error {
 			}
 		}
 
-		readyForVote.ViewsAmount++
+		readyForVote.IsViewed = true
+
 		err = h.readyForVoteDB.Update(readyForVote)
 		if err != nil {
 			h.log.WithError(err).Error("failed to update ready for vote entity in db")
@@ -102,13 +103,19 @@ func (h *Handler) Vote(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	if readyForVote.IsVoted {
+	if readyForVote.IsViewed {
 		h.log.Error("user already voted for this competition")
 		return c.JSON(http.StatusConflict, errs.UserAlreadyVotedErr)
 	}
 
-	readyForVote.ViewsAmount++
-	readyForVote.IsVoted = true
+	competition.ViewsAmount++
+	err = h.competitionsDB.Update(competition)
+	if err != nil {
+		h.log.WithError(err).Error("failed to update competition in db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	readyForVote.IsViewed = true
 
 	err = h.readyForVoteDB.Update(readyForVote)
 	if err != nil {

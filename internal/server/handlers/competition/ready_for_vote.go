@@ -99,6 +99,21 @@ func (h *Handler) ReadyForVote(c echo.Context) error {
 		}
 	}
 
+	competition.ViewsAmount++
+
+	err = h.competitionsDB.Update(competition)
+	if err != nil {
+		h.log.WithError(err).Error("failed to update competition in db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
+	readyForVote.IsViewed = true
+	err = h.readyForVoteDB.Update(readyForVote)
+	if err != nil {
+		h.log.WithError(err).Error("failed to update ready for vote entity in db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	}
+
 	return c.JSON(http.StatusOK, dto.CompetitionResponse{
 		ID: competition.ID,
 		NovelOne: &dto.NovelData{

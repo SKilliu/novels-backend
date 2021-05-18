@@ -47,13 +47,13 @@ CREATE TABLE IF NOT EXISTS novels_pool (
     novel_one_votes         FLOAT               NOT NULL,
     novel_two_votes         FLOAT               NOT NULL,
     created_at              INTEGER             NOT NULL,
-    updated_at              INTEGER             NOT NULL        
+    updated_at              INTEGER             NOT NULL,
+    views_amount            INTEGER             NOT NULL        
 );
 
 CREATE TABLE IF NOT EXISTS ready_for_vote (
     id              VARCHAR(36)         PRIMARY KEY,
     user_id         VARCHAR(36)         NOT NULL,
     novels_pool_id  VARCHAR(36)         REFERENCES novels_pool (id),
-    views_amount    INTEGER             NOT NULL,
-    is_voted        BOOLEAN             NOT NULL
+    is_viewed       BOOLEAN             NOT NULL
 );

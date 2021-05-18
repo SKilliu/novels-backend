@@ -173,8 +173,7 @@ func (h *Handler) Create(c echo.Context) error {
 			ID:           uuid.New().String(),
 			UserID:       u.ID,
 			NovelsPoolID: competitionOpponent.ID,
-			ViewsAmount:  0,
-			IsVoted:      false,
+			IsViewed:      false,
 		})
 		if err != nil {
 			h.log.WithError(err).Error("failed to insert a new ready for vote entity")

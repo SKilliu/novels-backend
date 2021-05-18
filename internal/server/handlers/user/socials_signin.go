@@ -106,8 +106,7 @@ func (h *Handler) SocialsSignIn(c echo.Context) error {
 								ID:           uuid.New().String(),
 								UserID:       uid,
 								NovelsPoolID: co.ID,
-								ViewsAmount:  0,
-								IsVoted:      false,
+								IsViewed:     false,
 							})
 							if err != nil {
 								h.log.WithError(err).Error("failed to insert a new ready for vote entity")

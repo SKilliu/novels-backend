@@ -1,9 +1,13 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/SKilliu/novels-backend/internal/db/models"
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )
+
+var getReadyForVoteQuery = "SELECT * FROM ready_for_vote WHERE novels_pool_id = (SELECT id FROM novels_pool WHERE id IN (SELECT novels_pool_id FROM ready_for_vote WHERE user_id = '%s' AND is_viewed = 'false') ORDER BY views_amount ASC LIMIT 1) AND user_id = '%s' LIMIT 1;"
 
 // UsersQ query interface, which provide access to DB functions.
 type ReadyForVoteQ interface {
@@ -42,7 +46,7 @@ func (r *ReadyForVoteWrapper) GetByUserAndCompetitionIDs(uid, cid string) (model
 
 func (c *ReadyForVoteWrapper) GetForVote(userid string) (models.ReadyForVote, error) {
 	var res models.ReadyForVote
-	err := c.parent.db.Select().From(models.ReadyForVoteTableName).Where(dbx.HashExp{"is_voted": false, "user_id": userid}).OrderBy("views_amount ASC").Limit(1).One(&res)
+	err := c.parent.db.NewQuery(fmt.Sprintf(getReadyForVoteQuery, userid)).One(&res)
 	return res, err
 }
 
