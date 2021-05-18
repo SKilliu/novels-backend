@@ -7,7 +7,7 @@ import (
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )
 
-var getReadyForVoteQuery = "SELECT * FROM ready_for_vote WHERE novels_pool_id = (SELECT id FROM novels_pool WHERE id IN (SELECT novels_pool_id FROM ready_for_vote WHERE user_id = '%s' AND is_viewed = 'false') ORDER BY views_amount ASC LIMIT 1) AND user_id = '%s' LIMIT 1;"
+var getReadyForVoteQuery = `SELECT * FROM ready_for_vote WHERE novels_pool_id = (SELECT id FROM novels_pool WHERE id IN (SELECT novels_pool_id FROM ready_for_vote WHERE user_id = '%s' AND is_viewed = 'false') ORDER BY views_amount ASC LIMIT 1) AND user_id = '%s' LIMIT 1;`
 
 // UsersQ query interface, which provide access to DB functions.
 type ReadyForVoteQ interface {
