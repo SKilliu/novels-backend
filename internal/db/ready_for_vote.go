@@ -46,7 +46,7 @@ func (r *ReadyForVoteWrapper) GetByUserAndCompetitionIDs(uid, cid string) (model
 
 func (c *ReadyForVoteWrapper) GetForVote(userid string) (models.ReadyForVote, error) {
 	var res models.ReadyForVote
-	err := c.parent.db.NewQuery(fmt.Sprintf(getReadyForVoteQuery, userid)).One(&res)
+	err := c.parent.db.NewQuery(fmt.Sprintf(getReadyForVoteQuery, userid, userid)).One(&res)
 	return res, err
 }
 

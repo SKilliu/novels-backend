@@ -2,6 +2,7 @@ package competition
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
@@ -29,6 +30,8 @@ func (h *Handler) ReadyForVote(c echo.Context) error {
 	}
 
 	readyForVote, err := h.readyForVoteDB.GetForVote(userID)
+	fmt.Println("============================>")
+	fmt.Println(readyForVote)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
