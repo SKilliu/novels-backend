@@ -2,7 +2,6 @@ package competition
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
@@ -30,8 +29,6 @@ func (h *Handler) ReadyForVote(c echo.Context) error {
 	}
 
 	readyForVote, err := h.readyForVoteDB.GetForVote(userID)
-	fmt.Println("============================>")
-	fmt.Println(readyForVote)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -100,13 +97,6 @@ func (h *Handler) ReadyForVote(c echo.Context) error {
 			h.log.WithError(err).Error("failed to get second user from db by email")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 		}
-	}
-
-	readyForVote.IsViewed = true
-	err = h.readyForVoteDB.Update(readyForVote)
-	if err != nil {
-		h.log.WithError(err).Error("failed to update ready for vote entity in db")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
 	return c.JSON(http.StatusOK, dto.CompetitionResponse{
