@@ -52,8 +52,8 @@ func (h *Handler) Vote(c echo.Context) error {
 			}
 		}
 
-		readyForVote.ViewsAmount++
-		err = h.readyForVoteDB.Update(readyForVote)
+		readyForVote[0].ViewsAmount++
+		err = h.readyForVoteDB.Update(readyForVote[0])
 		if err != nil {
 			h.log.WithError(err).Error("failed to update ready for vote entity in db")
 			return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
