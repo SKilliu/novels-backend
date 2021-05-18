@@ -39,16 +39,7 @@ func (h *Handler) ReadyForVote(c echo.Context) error {
 		}
 	}
 
-	if len(readyForVote) == 0 {
-		return c.JSON(http.StatusOK, nil)
-	}
-
-	competitionID := readyForVote[0].NovelsPoolID
-	if len(readyForVote) == 2 && readyForVote[0].ViewsAmount == readyForVote[1].ViewsAmount {
-		competitionID = readyForVote[1].NovelsPoolID
-	}
-
-	competition, err := h.competitionsDB.GetByID(competitionID)
+	competition, err := h.competitionsDB.GetByID(readyForVote.NovelsPoolID)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
