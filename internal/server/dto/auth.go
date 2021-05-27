@@ -55,3 +55,10 @@ type UpdateVersionRequest struct {
 type GetVersionResponse struct {
 	Version string `json:"version"`
 }
+
+type GetAllUsersResponse struct {
+	ID       string `json:"id"`
+	Username string `json:"username"`
+	// Email    string `json:"email"`
+	DeviceID string `json:"device_id"`
+}

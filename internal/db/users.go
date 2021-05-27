@@ -28,6 +28,8 @@ type UsersQ interface {
 	GetAllForVote(userOneID, userTwoID string) ([]models.User, error)
 	GetByToken(token, key string) (models.User, error)
 	DropAll() error
+	GetAll() ([]models.User, error)
+	DeleteByID(userid string) error
 }
 
 // UsersWrapper wraps interface.
@@ -125,4 +127,20 @@ func (u *UsersWrapper) GetByToken(token, key string) (models.User, error) {
 	}
 
 	return res, errs.UserWithTokenNotFoundErr.ToError()
+}
+
+func (u *UsersWrapper) GetAll() ([]models.User, error) {
+	var res []models.User
+	err := u.parent.db.Select().From(models.UsersTableName).All(&res)
+	return res, err
+}
+
+func (u *UsersWrapper) DeleteByID(userid string) error {
+	_, err := u.parent.db.Delete(models.UsersTableName, dbx.HashExp{"id": userid}).Execute()
+
+	_, err = u.parent.db.Delete(models.ReadyForVoteTableName, dbx.HashExp{"user_id": userid}).Execute()
+
+	_, err = u.parent.db.Delete(models.CompetitionsTableName, dbx.HashExp{"user_one_id": userid, "user_two_id": userid}).Execute()
+
+	return err
 }

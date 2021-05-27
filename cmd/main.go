@@ -10,7 +10,7 @@ import (
 // const pathToConfigFile = "./envs.yaml"
 
 // @title Novels REST API
-// @version 1.0.1
+// @version 1.0.2
 // @description REST API for Novels app.
 // @description New in version:<br> - fixed bug with voting.
 // @securityDefinitions.apiKey bearerAuth

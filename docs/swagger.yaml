@@ -216,8 +216,64 @@ info:
     REST API for Novels app.
     New in version:<br> - fixed bug with voting.
   title: Novels REST API
-  version: 1.0.1
+  version: 1.0.2
 paths:
+  /admin/all_users:
+    get:
+      consumes:
+      - application/json
+      description: Get all users from db
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Get all users
+      tags:
+      - admin
+  /admin/drop_user:
+    delete:
+      consumes:
+      - application/json
+      description: Drop user by ID from the database
+      parameters:
+      - description: user_id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrResp'
+      security:
+      - bearerAuth: []
+      summary: Drop user
+      tags:
+      - admin
   /api/admin/drop_all:
     delete:
       consumes:
