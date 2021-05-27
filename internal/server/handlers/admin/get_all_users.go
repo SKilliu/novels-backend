@@ -18,7 +18,7 @@ import (
 // @Success 200 {} http.StatusOK
 // @Failure 400 {object} errs.ErrResp
 // @Failure 500 {object} errs.ErrResp
-// @Router /admin/all_users [get]
+// @Router /api/admin/all_users [get]
 func (h *Handler) GetAllUsers(c echo.Context) error {
 	var resp []dto.GetAllUsersResponse
 	users, err := h.usersDB.GetAll()

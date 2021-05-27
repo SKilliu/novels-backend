@@ -18,7 +18,7 @@ import (
 // @Success 200 {} http.StatusOK
 // @Failure 400 {object} errs.ErrResp
 // @Failure 500 {object} errs.ErrResp
-// @Router /admin/drop_user [delete]
+// @Router /api/admin/drop_user [delete]
 func (h *Handler) DropUser(c echo.Context) error {
 
 	userID := c.QueryParam("user_id")
