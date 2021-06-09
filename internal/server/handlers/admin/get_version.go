@@ -1,14 +1,11 @@
 package admin
 
 import (
-	"io/ioutil"
 	"net/http"
-	"os"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
 	"github.com/SKilliu/novels-backend/internal/server/dto"
 	"github.com/labstack/echo/v4"
-	"gopkg.in/yaml.v3"
 )
 
 // @Summary Get client version
@@ -32,30 +29,36 @@ func (h *Handler) GetVersion(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, errs.EmptyQueryParamErr)
 	}
 
-	ymlFile, err := os.Open("./static/versions.yaml")
+	versions, err := h.versionsDB.Get()
 	if err != nil {
-		panic(err)
+		h.log.WithError(err).Error("failed to get versions from db")
+		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	defer ymlFile.Close()
+	// ymlFile, err := os.Open("./static/versions.yaml")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	var versions = make(map[string]string)
+	// defer ymlFile.Close()
 
-	byteValue, err := ioutil.ReadAll(ymlFile)
-	if err != nil {
-		panic(err)
-	}
+	// var versions = make(map[string]string)
 
-	err = yaml.Unmarshal(byteValue, &versions)
-	if err != nil {
-		panic(err)
-	}
+	// byteValue, err := ioutil.ReadAll(ymlFile)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// err = yaml.Unmarshal(byteValue, &versions)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	switch platform {
 	case "android":
-		resp.Version = versions["android"]
+		resp.Version = versions.Android
 	case "ios":
-		resp.Version = versions["ios"]
+		resp.Version = versions.Ios
 	default:
 		h.log.Error("incorrect platform name in request")
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)

@@ -57,3 +57,8 @@ CREATE TABLE IF NOT EXISTS ready_for_vote (
     novels_pool_id  VARCHAR(36)         REFERENCES novels_pool (id),
     is_viewed       BOOLEAN             NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS versions (
+    android VARCHAR(50)     NOT NULL DEFAULT '0.67',
+    ios     VARCHAR(50)     NOT NULL DEFAULT '2.1.9'
+);

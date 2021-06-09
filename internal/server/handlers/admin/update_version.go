@@ -1,14 +1,11 @@
 package admin
 
 import (
-	"io/ioutil"
 	"net/http"
-	"os"
 
 	"github.com/SKilliu/novels-backend/internal/errs"
 	"github.com/SKilliu/novels-backend/internal/server/dto"
 	"github.com/labstack/echo/v4"
-	"gopkg.in/yaml.v3"
 )
 
 // @Summary Update client version
@@ -32,45 +29,57 @@ func (h *Handler) UpdateVersion(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad param in body")
 	}
 
-	ymlFile, err := os.Open("./static/versions.yaml")
+	versions, err := h.versionsDB.Get()
 	if err != nil {
-		h.log.WithError(err).Error("failed to open yaml file")
+		h.log.WithError(err).Error("failed to get versions from db")
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
-	defer ymlFile.Close()
+	// ymlFile, err := os.Open("./static/versions.yaml")
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to open yaml file")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
 
-	var versions = make(map[string]string)
+	// defer ymlFile.Close()
 
-	byteValue, err := ioutil.ReadAll(ymlFile)
-	if err != nil {
-		h.log.WithError(err).Error("failed to read bytes from yaml file")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-	}
+	// var versions = make(map[string]string)
 
-	err = yaml.Unmarshal(byteValue, &versions)
-	if err != nil {
-		h.log.WithError(err).Error("failed to unmarshal yaml file")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-	}
+	// byteValue, err := ioutil.ReadAll(ymlFile)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to read bytes from yaml file")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
+
+	// err = yaml.Unmarshal(byteValue, &versions)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to unmarshal yaml file")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
 
 	if req.Platform == "android" {
-		versions["android"] = req.Version
+		versions.Android = req.Version
 	}
 
 	if req.Platform == "ios" {
-		versions["ios"] = req.Version
+		versions.Ios = req.Version
 	}
 
-	bytes, err := yaml.Marshal(&versions)
-	if err != nil {
-		h.log.WithError(err).Error("failed to marshal versions to bytes")
-		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
-	}
+	// bytes, err := yaml.Marshal(&versions)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to marshal versions to bytes")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
 
-	err = ioutil.WriteFile("./static/versions.yaml", bytes, 0644)
+	// err = ioutil.WriteFile("./static/versions.yaml", bytes, 0644)
+	// if err != nil {
+	// 	h.log.WithError(err).Error("failed to write bytes into yaml file")
+	// 	return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
+	// }
+
+	err = h.versionsDB.Update(versions)
 	if err != nil {
-		h.log.WithError(err).Error("failed to write bytes into yaml file")
+		h.log.WithError(err).Error("failed to update versions in db")
 		return c.JSON(http.StatusInternalServerError, errs.InternalServerErr)
 	}
 
