@@ -5,6 +5,7 @@ const VersionsTableName = "versions"
 
 // User entity in db.
 type Versions struct {
+	ID      string `db:"id"`
 	Android string `db:"android"`
 	Ios     string `db:"ios"`
 }

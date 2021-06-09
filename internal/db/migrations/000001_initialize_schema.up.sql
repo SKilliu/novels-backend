@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS ready_for_vote (
 );
 
 CREATE TABLE IF NOT EXISTS versions (
+    id      VARCHAR(36)     PRIMARY KEY,
     android VARCHAR(50)     NOT NULL DEFAULT '0.67',
     ios     VARCHAR(50)     NOT NULL DEFAULT '2.1.9'
 );
